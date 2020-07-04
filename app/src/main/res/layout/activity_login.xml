@@ -21,8 +21,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="158dp"
-        android:layout_height="0dp"
+        android:layout_width="225dp"
+        android:layout_height="170dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
@@ -36,8 +36,8 @@
 
     <EditText
         android:id="@+id/usuario"
-        android:layout_width="330dp"
-        android:layout_height="0dp"
+        android:layout_width="351dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="42dp"
         android:ems="10"
         android:hint="Usuario"
@@ -52,32 +52,30 @@
 
     <EditText
         android:id="@+id/clave"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="34dp"
+        android:layout_width="351dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usuario" />
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="288dp"
+        android:layout_width="289dp"
 
-        android:layout_height="0dp"
-        android:layout_marginBottom="204dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="68dp"
         android:background="@drawable/btn"
         android:onClick="Login"
         android:text="Iniciar sesión"
         android:textColor="#FFFFFF"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clave" />
