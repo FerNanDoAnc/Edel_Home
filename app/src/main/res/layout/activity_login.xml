@@ -7,28 +7,53 @@
     android:background="#00796B"
     tools:context=".LoginActivity">
 
+
+
+    <ImageView
+        android:id="@+id/amarillo1"
+        android:layout_width="411dp"
+        android:layout_height="144dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/amarillo1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/amarillo"
+        android:layout_width="413dp"
+        android:layout_height="244dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/amarillo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="211dp"
+        android:layout_height="137dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="124dp"
+        android:src="@drawable/foco1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text=""
+        android:text="EdelHome"
+        android:textColor="#FFFFFF"
         android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="225dp"
-        android:layout_height="170dp"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="38dp"
-        android:src="@drawable/foco1"
-        app:layout_constraintBottom_toTopOf="@+id/usuario"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
