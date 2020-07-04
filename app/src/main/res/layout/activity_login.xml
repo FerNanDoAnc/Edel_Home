@@ -8,11 +8,10 @@
     tools:context=".LoginActivity">
 
 
-
     <ImageView
         android:id="@+id/amarillo1"
-        android:layout_width="411dp"
-        android:layout_height="144dp"
+        android:layout_width="421dp"
+        android:layout_height="114dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:background="@drawable/amarillo1"
@@ -23,8 +22,8 @@
 
     <ImageView
         android:id="@+id/amarillo"
-        android:layout_width="413dp"
-        android:layout_height="244dp"
+        android:layout_width="416dp"
+        android:layout_height="225dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
@@ -39,9 +38,10 @@
         android:layout_height="137dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="92dp"
         android:src="@drawable/foco1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.455"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,12 +49,13 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:text="EdelHome"
         android:textColor="#FFFFFF"
-        android:textSize="60sp"
+        android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +63,7 @@
         android:id="@+id/usuario"
         android:layout_width="351dp"
         android:layout_height="65dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
         android:hint="Usuario"
         android:inputType="textPersonName"
@@ -93,7 +94,7 @@
         android:layout_width="289dp"
 
         android:layout_height="62dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/btn"
         android:onClick="Login"
         android:text="Iniciar sesión"
