@@ -7,54 +7,47 @@
     android:background="#00796B"
     tools:context=".LoginActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text=""
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="158dp"
+        android:layout_width="229dp"
         android:layout_height="0dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="60dp"
         android:src="@drawable/foco1"
         app:layout_constraintBottom_toTopOf="@+id/usuario"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/usuario"
-        android:layout_width="330dp"
+        android:layout_width="302dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="165dp"
         android:ems="10"
         android:hint="Usuario"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/clave"
+        app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/clave"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="34dp"
+        android:layout_width="302dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="68dp"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
@@ -63,15 +56,14 @@
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usuario" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="288dp"
+        android:layout_width="250dp"
 
         android:layout_height="0dp"
-        android:layout_marginBottom="204dp"
+        android:layout_marginBottom="116dp"
         android:background="@drawable/btn"
         android:onClick="Login"
         android:text="Iniciar sesión"
@@ -79,8 +71,9 @@
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clave" />
+        app:layout_constraintTop_toBottomOf="@+id/usuario" />
 
 
 </android.support.constraint.ConstraintLayout>
