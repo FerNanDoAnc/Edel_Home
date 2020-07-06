@@ -8,18 +8,58 @@
     tools:context=".LoginActivity">
 
 
+
+    <ImageView
+        android:id="@+id/amarillo1"
+        android:layout_width="421dp"
+        android:layout_height="114dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/amarillo1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/amarillo"
+        android:layout_width="416dp"
+        android:layout_height="225dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/amarillo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="229dp"
         android:layout_height="0dp"
+        android:layout_width="215dp"
+        android:layout_height="130dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="32dp"
         android:layout_marginTop="55dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="60dp"
+        android:layout_marginTop="104dp"
         android:src="@drawable/foco1"
-        app:layout_constraintBottom_toTopOf="@+id/usuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="239dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="44dp"
+        android:text="EdelHome"
+        android:textColor="#FFFFFF"
+        android:textSize="51sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,13 +72,15 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="165dp"
+        android:layout_width="351dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
         android:hint="Usuario"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -48,28 +90,32 @@
         android:layout_width="302dp"
         android:layout_height="69dp"
         android:layout_marginBottom="68dp"
+        android:layout_width="351dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="44dp"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn"
         android:layout_width="250dp"
+        android:layout_width="289dp"
 
         android:layout_height="0dp"
         android:layout_marginBottom="116dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/btn"
         android:onClick="Login"
         android:text="Iniciar sesión"
         android:textColor="#FFFFFF"
-        android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
