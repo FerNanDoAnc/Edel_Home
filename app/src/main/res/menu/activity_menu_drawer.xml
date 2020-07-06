@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_usuarios"
+            android:title="@string/menu_usuarios" />
+        <item
+            android:id="@+id/nav_clave"
+            android:title="@string/menu_cambioclave" />
+        <item
+        android:id="@+id/nav_habitaciones"
+        android:title="@string/menu_habitaciones" />
+        <item
+            android:id="@+id/nav_cerrarsesion"
+            android:actionLayout="@layout/botoncerrarsesion"
+            android:title="" />
+    </group>
+
+</menu>
