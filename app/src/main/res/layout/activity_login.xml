@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/amarillo1"
-        android:layout_width="412dp"
-        android:layout_height="74dp"
+        android:layout_width="362dp"
+        android:layout_height="81dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:background="@drawable/amarillo1"
@@ -22,8 +22,8 @@
 
     <ImageView
         android:id="@+id/amarillo"
-        android:layout_width="436dp"
-        android:layout_height="166dp"
+        android:layout_width="365dp"
+        android:layout_height="136dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
@@ -40,7 +40,7 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="32dp"
         android:src="@drawable/foco1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,10 +63,10 @@
 
     <EditText
         android:id="@+id/usuario"
-        android:layout_width="350dp"
+        android:layout_width="280dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Usuario"
@@ -75,15 +75,14 @@
         android:textColorHint="#FFFFFF"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/clave"
-        android:layout_width="350dp"
+        android:layout_width="280dp"
         android:layout_height="60dp"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
@@ -91,16 +90,16 @@
         android:textColorHint="#FFFFFF"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/usuario" />
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="290dp"
+        android:layout_width="250dp"
 
         android:layout_height="50dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="48dp"
         android:background="@drawable/btn"
         android:onClick="Login"
         android:text="Iniciar sesión"
@@ -109,7 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usuario" />
+        app:layout_constraintTop_toBottomOf="@+id/clave" />
 
 
 </android.support.constraint.ConstraintLayout>
