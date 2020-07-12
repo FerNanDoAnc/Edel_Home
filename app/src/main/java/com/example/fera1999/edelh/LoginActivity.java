@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     public void Login(View view) {
        if((usuario.getText().toString().equalsIgnoreCase("usuario") )&&(clave.getText().toString().equals("1234"))){
         Intent intent = new Intent(LoginActivity.this, MenuPrincipalActivity.class);
-        intent.putExtra("username", usuario.getText().toString());
+        intent.putExtra("usuario", usuario.getText().toString());
         startActivity(intent);
     }else{
         Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();

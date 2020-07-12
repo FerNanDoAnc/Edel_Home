@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Menu Principal">
+        <menu>
+            <item
+                android:id="@+id/home"
+                android:icon="@drawable/ic_foco"
+                android:title="Encendido/Apagado">
+            </item>
+            <item
+                android:id="@+id/usuario"
+                android:icon="@drawable/ic_group"
+                android:title="Usuarios">
+            </item>
+            <item
+                android:id="@+id/psw"
+                android:icon="@drawable/ic_psw"
+                android:title="Cambiar Contraseña">
+            </item>
+            <item
+                android:id="@+id/foco"
+                android:icon="@drawable/ic_cuartos"
+                android:title="Habitaciones/Focos">
+            </item>
+        </menu>
+    </item>
+</menu>
