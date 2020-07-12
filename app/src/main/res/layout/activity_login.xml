@@ -96,9 +96,9 @@
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="250dp"
+        android:layout_width="280dp"
 
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_marginTop="48dp"
         android:background="@drawable/btn"
         android:onClick="Login"
