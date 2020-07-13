@@ -59,7 +59,7 @@
         android:ems="10"
         android:hint="Usuario"
         android:inputType="textPersonName"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textColorHint="#FFFFFF"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:textColorHint="#FFFFFF"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,12 +91,24 @@
         android:background="@drawable/btn"
         android:onClick="Login"
         android:text="Iniciar sesión"
-        android:textColor="#FFFFFF"
+        android:textColor="#fff"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clave" />
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="231dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:text="Usuario o contraseña incorrecta."
+        android:textAlignment="center"
+        android:textColor="#ff00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
 </android.support.constraint.ConstraintLayout>
