@@ -11,12 +11,12 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
 
-        <activity android:name=".MenuPrincipalActivity">
+        <activity android:name=".MenuPrincipalActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>
 
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
