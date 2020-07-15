@@ -27,7 +27,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         drawerlayout= findViewById(R.id.drawer);
         navigationView=findViewById(R.id.navigationView);
 
-        actionBarDrawerToggle=new ActionBarDrawerToggle(this,drawerlayout, toolbar,R.string.open,R.string.close);
+        actionBarDrawerToggle= new ActionBarDrawerToggle(this,drawerlayout, toolbar,R.string.open,R.string.close);
         drawerlayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
