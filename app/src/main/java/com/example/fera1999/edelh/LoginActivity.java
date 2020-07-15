@@ -9,11 +9,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
-    EditText clave, usuario;
-    TextView tverror;
-    Button login;
+    EditText edtClave, edtUsuario;
+    Button btnLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,16 +34,59 @@ public class LoginActivity extends AppCompatActivity {
         tverror=findViewById(R.id.tvError);
 
         tverror.setVisibility(View.INVISIBLE);
+        edtUsuario=findViewById(R.id.usuario);
+        edtClave=findViewById(R.id.clave);
+        btnLogin = findViewById(R.id.btnLogin);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doLogin();
+            }
+        });
     }
-    public void Login(View view) {
-       if((usuario.getText().toString().equalsIgnoreCase("usuario") )&&(clave.getText().toString().equals("1234"))){
+    public void doLogin() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.1.10:80/edelhome/doLogin.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.isEmpty()){
+                    Intent intent = new Intent(getApplicationContext(), MenuPrincipalActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<String,String>();
+                parametros.put("usuario",edtUsuario.getText().toString());
+                parametros.put("password",edtClave.getText().toString());
+                return parametros;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+       /*
+       if((edtUsuario.getText().toString().equalsIgnoreCase("usuario") )&&(edtClave.getText().toString().equals("1234"))){
         Intent intent = new Intent(LoginActivity.this, MenuPrincipalActivity.class);
-        intent.putExtra("username", usuario.getText().toString());
+        intent.putExtra("usuario", edtUsuario.getText().toString());
         startActivity(intent);
     }else{
 
         tverror.setVisibility(View.VISIBLE);
 
     }
+        }else{
+            Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
+        }
+        */
     }
 }
