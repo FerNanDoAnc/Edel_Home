@@ -63,43 +63,50 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     public void changePassword() {
+        if(edtNewPassword.getText().toString() != edtNewPasswordConfirm.getText().toString()){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://192.168.1.10:80/edelhome/changePassword.php", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Contraseña cambiada con éxito", Toast.LENGTH_LONG).show();
-                Fragment newFragment = new HomeFragment();
-                FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, newFragment, newFragment.getTag()
-                );
+            edtNewPassword.setText("");
+            edtNewPasswordConfirm.setText("");
+            edtNewPassword.requestFocus();
+            Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Las contraseñas no coinciden", Toast.LENGTH_LONG).show();
+        }else {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    "http://192.168.1.10:80/edelhome/changePassword.php", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Contraseña cambiada con éxito", Toast.LENGTH_LONG).show();
+                    Fragment newFragment = new HomeFragment();
+                    FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+                    transaction.replace(R.id.nav_host_fragment, newFragment, newFragment.getTag()
+                    );
 
-                transaction.commit();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                edtActualPassword.setText("");
-                edtNewPassword.setText("");
-                edtNewPasswordConfirm.setText("");
-                openDialog();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() {
-                String user_id = sharedPreferences.getString("user_id", "");
-                Map<String,String> parameters = new HashMap<>();
+                    transaction.commit();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    edtActualPassword.setText("");
+                    edtNewPassword.setText("");
+                    edtNewPasswordConfirm.setText("");
+                    openDialog();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    String user_id = sharedPreferences.getString("user_id", "");
+                    Map<String, String> parameters = new HashMap<>();
 
-                parameters.put("user_id", Objects.requireNonNull(user_id));
-                parameters.put("new_pass", edtNewPassword.getText().toString());
-                parameters.put("actual_pass", edtActualPassword.getText().toString());
+                    parameters.put("user_id", Objects.requireNonNull(user_id));
+                    parameters.put("new_pass", edtNewPassword.getText().toString());
+                    parameters.put("actual_pass", edtActualPassword.getText().toString());
 
-                return parameters;
-            }
-        };
+                    return parameters;
+                }
+            };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()).getApplicationContext());
-        requestQueue.add(stringRequest);
+            RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()).getApplicationContext());
+            requestQueue.add(stringRequest);
+        }
     }
     public void openDialog (){
         DialogMaker dialog = new DialogMaker();
