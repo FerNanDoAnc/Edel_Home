@@ -15,7 +15,7 @@
         android:id="@+id/nav_users"
         android:name="com.example.fera1999.edelh.ui.users.UsersFragment"
         android:label="@string/menu_users"
-        tools:layout="@layout/fragment_users" />
+        tools:layout="@layout/activity_usuario" />
 
     <fragment
         android:id="@+id/nav_switches"

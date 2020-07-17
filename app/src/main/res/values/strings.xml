@@ -21,5 +21,6 @@
     <string name="input_new_password">Ingrese su nueva contraseña</string>
     <string name="input_new_password_confirm">Confirme su nueva contraseña</string>
     <string name="button_new_password_save">Actualizar contraseña</string>
+    <string name="button_crear_usuario">Crear</string>
     <string name="empty_contentDescription"> </string>
 </resources>
