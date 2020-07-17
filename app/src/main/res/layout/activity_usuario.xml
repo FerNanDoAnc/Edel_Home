@@ -22,10 +22,10 @@
         app:srcCompat="@drawable/ic_usuario" />
 
     <ListView
-        android:layout_width="338dp"
+        android:layout_width="338sp"
         android:layout_height="0sp"
         android:layout_marginTop="60sp"
-        android:layout_marginBottom="69dp"
+        android:layout_marginBottom="69sp"
         app:layout_constraintBottom_toTopOf="@+id/imageButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.78"
