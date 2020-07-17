@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,6 +28,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        usuario=findViewById(R.id.usuario);
+        clave=findViewById(R.id.clave);
+
+        tverror=findViewById(R.id.tvError);
+
+        tverror.setVisibility(View.INVISIBLE);
         edtUsuario=findViewById(R.id.usuario);
         edtClave=findViewById(R.id.clave);
         btnLogin = findViewById(R.id.btnLogin);
