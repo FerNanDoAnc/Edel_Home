@@ -101,9 +101,10 @@ DROP PROCEDURE IF EXISTS changePassword;
 DELIMITER //
 CREATE PROCEDURE changePassword(
   IN var_user_id SMALLINT(5),
-  IN new_pass VARCHAR(50))
+  IN var_new_pass VARCHAR(50),
+  IN var_actual_pass VARCHAR(50))
 BEGIN
-   UPDATE usuario SET pass = new_pass WHERE user_id = var_user_id;
+   UPDATE usuario SET pass = var_new_pass WHERE user_id = var_user_id AND pass = var_actual_pass;
 END//
 
 DROP PROCEDURE IF EXISTS updateUserData;
@@ -127,6 +128,16 @@ CREATE PROCEDURE doLogin(
 )
 BEGIN
   SELECT * FROM usuario WHERE username = user_name AND pass = var_pass;
+END //
+
+DROP PROCEDURE IF EXISTS verificateUser;
+DELIMITER //
+CREATE PROCEDURE verificateUser(
+  IN var_user_id VARCHAR (30),
+  IN var_pass VARCHAR (50)
+)
+BEGIN
+  SELECT * FROM usuario WHERE user_id = var_user_id AND pass = var_pass;
 END //
 
 -- TO WORK --
