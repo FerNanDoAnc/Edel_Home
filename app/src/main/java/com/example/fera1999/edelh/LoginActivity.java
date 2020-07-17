@@ -1,7 +1,7 @@
 package com.example.fera1999.edelh;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,11 +46,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     public void doLogin() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.1.10:80/edelhome/doLogin.php", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.1.44:80/edelhome/doLogin.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if(!response.isEmpty()){
-                    Intent intent = new Intent(getApplicationContext(), MenuPrincipalActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MenuDrawerActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
@@ -63,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         }){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> parametros = new HashMap<String,String>();
+            protected Map<String, String> getParams() {
+                Map<String,String> parametros = new HashMap<>();
                 parametros.put("usuario",edtUsuario.getText().toString());
                 parametros.put("password",edtClave.getText().toString());
                 return parametros;
@@ -73,20 +73,5 @@ public class LoginActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
-       /*
-       if((edtUsuario.getText().toString().equalsIgnoreCase("usuario") )&&(edtClave.getText().toString().equals("1234"))){
-        Intent intent = new Intent(LoginActivity.this, MenuPrincipalActivity.class);
-        intent.putExtra("usuario", edtUsuario.getText().toString());
-        startActivity(intent);
-    }else{
-
-        tverror.setVisibility(View.VISIBLE);
-
-    }
-        }else{
-            Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
-        }
-        */
     }
 }

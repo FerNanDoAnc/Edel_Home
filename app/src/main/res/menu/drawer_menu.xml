@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Menu Principal">
+    <item android:title="@string/title_main_menu">
         <menu>
             <item
                 android:id="@+id/home"
                 android:icon="@drawable/ic_foco"
-                android:title="Encendido/Apagado">
+                android:title="@string/menu_home">
             </item>
             <item
                 android:id="@+id/usuario"
                 android:icon="@drawable/ic_group"
-                android:title="Usuarios">
-            </item>
-            <item
-                android:id="@+id/psw"
-                android:icon="@drawable/ic_psw"
-                android:title="Cambiar Contraseña">
+                android:title="@string/menu_users">
             </item>
             <item
                 android:id="@+id/foco"
                 android:icon="@drawable/ic_cuartos"
-                android:title="Habitaciones/Focos">
+                android:title="@string/menu_switches">
+            </item>
+            <item
+                android:id="@+id/psw"
+                android:icon="@drawable/ic_psw"
+                android:title="@string/menu_change_password">
             </item>
         </menu>
     </item>
