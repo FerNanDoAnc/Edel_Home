@@ -28,12 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        usuario=findViewById(R.id.usuario);
-        clave=findViewById(R.id.clave);
-
-        tverror=findViewById(R.id.tvError);
-
-        tverror.setVisibility(View.INVISIBLE);
         edtUsuario=findViewById(R.id.usuario);
         edtClave=findViewById(R.id.clave);
         btnLogin = findViewById(R.id.btnLogin);
