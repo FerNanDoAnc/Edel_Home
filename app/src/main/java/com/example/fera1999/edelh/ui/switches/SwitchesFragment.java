@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.fera1999.edelh.R;
 
 public class SwitchesFragment extends Fragment {
+
+
 
     private SwitchesViewModel slideshowViewModel;
 
