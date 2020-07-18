@@ -7,10 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,26 +28,57 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText edtClave, edtUsuario;
+    EditText edtPass, edtUser;
     Button btnLogin;
+    TextView txtNewUser;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor userDataPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        edtUsuario=findViewById(R.id.usuario);
-        edtClave=findViewById(R.id.clave);
-        btnLogin = findViewById(R.id.btnLogin);
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userDataPref = sharedPreferences.edit();
+        activityGuard();
+        setContentView(R.layout.activity_login);
+        edtUser =findViewById(R.id.edtUser);
+        edtPass =findViewById(R.id.edtPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        txtNewUser = findViewById(R.id.txtNewuser);
+
+        txtNewUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this,
+                        "Comunícate con el administrador para gestionar tus datos de acceso.",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 doLogin();
             }
         });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        activityGuard();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        activityGuard();
+    }
+
+    private void activityGuard() {
+        boolean isLogged = sharedPreferences.getBoolean("isLogged",false);
+        if(isLogged){
+            Intent intent = new Intent(getApplicationContext(), MenuDrawerActivity.class);
+            startActivity(intent);
+        }
     }
     public void doLogin() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
@@ -63,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                         userDataPref.putString("email", userDataJson.get("email").toString());
                         userDataPref.putString("isAdministrator", userDataJson.get("administrador").toString());
                         userDataPref.putString("group_id", userDataJson.get("group_id").toString());
+                        userDataPref.putBoolean("isLogged",true);
                         userDataPref.apply();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -81,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String,String> parametros = new HashMap<>();
-                parametros.put("usuario",edtUsuario.getText().toString());
-                parametros.put("password",edtClave.getText().toString());
+                parametros.put("usuario", edtUser.getText().toString());
+                parametros.put("password", edtPass.getText().toString());
                 return parametros;
             }
         };

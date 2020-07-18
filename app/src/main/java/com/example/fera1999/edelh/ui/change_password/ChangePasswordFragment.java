@@ -25,7 +25,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fera1999.edelh.DialogMaker;
-import com.example.fera1999.edelh.LoginActivity;
 import com.example.fera1999.edelh.R;
 import com.example.fera1999.edelh.ui.home.HomeFragment;
 
@@ -63,13 +62,17 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     public void changePassword() {
-        if(edtNewPassword.getText().toString() != edtNewPasswordConfirm.getText().toString()){
+        String newPass = edtNewPassword.getText().toString();
+        String confirmPass = edtNewPasswordConfirm.getText().toString();
+
+        if(newPass == confirmPass){
 
             edtNewPassword.setText("");
             edtNewPasswordConfirm.setText("");
             edtNewPassword.requestFocus();
             Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Las contraseñas no coinciden", Toast.LENGTH_LONG).show();
-        }else {
+        }
+        else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST,
                     "http://192.168.1.10:80/edelhome/changePassword.php", new Response.Listener<String>() {
                 @Override
