@@ -78,11 +78,11 @@ public class HomeFragment extends Fragment {
                @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> parameters = new HashMap<>();
-                    String newStatus = bulbStatus.toString() +","+1;
                     String bulbStatusOnBinary = "0";
                     if(bulbStatus){
                         bulbStatusOnBinary = "1";
                     }
+                   String newStatus =  1 +","+ bulbStatusOnBinary;
                     parameters.put("arduinoRequest", newStatus);
                     parameters.put("switch_id","1");
                     parameters.put("bulb_state", bulbStatusOnBinary);

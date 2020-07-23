@@ -1,37 +1,43 @@
-#include <Separador.h>
-Separador s;
 char c;
-String estado;
-String id;
-void setup()
-{
+char estado;
+char id;
+char dato;
+
+// LEDS
+int led1 = 12;
+boolean isSecondParam = false;
+void setup(){
   Serial.begin(9600);
   pinMode(12, OUTPUT);
 }
 
 void loop(){
   if (Serial.available() > 0){
-    String datosrecibidos=Serial.readString();
+    dato = Serial.read();
 
-    estado = s.separa(datosrecibidos,',',0);
-    id = s.separa(datosrecibidos,',',1);
-    Serial.println("Error de datos"+estado+id);
+    if(isSecondParam){
+       estado = dato;
+     };
 
-    if(id == "1"){
-      Serial.println("Error Shimiastico");
+    if(dato == ','){
+      isSecondParam = true;
+    };
 
-      if (estado == "true"){
-      Serial.println("on");
-      digitalWrite(12, HIGH);
-      }else{
-        Serial.println("off");
-        digitalWrite(12, LOW);
+    if(!isSecondParam){
+       id = dato;
+    };
+
+
+     if(id == '1'){
+        if(estado == '1'){
+            digitalWrite(led1,HIGH);
+          }
+        if(estado == '0'){
+            digitalWrite(led1, LOW);
+        }
       }
-   }else {
-    Serial.println("oyopiz");
-    }
- }else{
-    delay(100);
+  Serial.println(dato);
+
   }
-  
+  Serial.println("id"+id);
 }
