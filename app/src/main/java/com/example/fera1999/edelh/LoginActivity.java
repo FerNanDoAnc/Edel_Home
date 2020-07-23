@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void doLogin() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://192.168.1.21:80/edelhome/doLogin.php", new Response.Listener<String>() {
+                "http://192.168.1.36:80/edelhome/doLogin.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if(!response.isEmpty()){

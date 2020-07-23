@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.fera1999.edelh.LoginActivity;
 import com.example.fera1999.edelh.R;
 
 import java.util.HashMap;
@@ -55,15 +56,17 @@ public class HomeFragment extends Fragment {
     }
     public void changeBulbStatus() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://192.168.1.21:80/edelhome/editBulbState.php", new Response.Listener<String>() {
+                "http://192.168.1.36:80/edelhome/editBulbState.php", new Response.Listener<String>() {
               @Override
               public void onResponse(String response) {
                   if(!bulbStatus) {
                       btnEncender.setBackgroundResource(R.drawable.boton_encender);
                       bulbStatus = true;
+                      Toast.makeText(getContext(), "Foco Apagado", Toast.LENGTH_SHORT).show();
                   } else {
                       btnEncender.setBackgroundResource(R.drawable.boton_apagar);
                       bulbStatus = false;
+                      Toast.makeText(getContext(), "Foco Encendido", Toast.LENGTH_SHORT).show();
                   }
               }
         }, new Response.ErrorListener() {
