@@ -7,16 +7,19 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +32,14 @@ import androidx.lifecycle.ViewModelProviders;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.fera1999.edelh.R;
+import com.example.fera1999.edelh.adaptadores.AdaptadorUsuario;
 import com.example.fera1999.edelh.clases.Usuario;
 
 import org.json.JSONArray;
@@ -49,7 +55,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class UsersFragment extends Fragment {
+public class UsersFragment extends Fragment implements  View.OnClickListener, AdapterView.OnItemSelectedListener {
     String ip="192.168.43.246";
     String nuevonombreusuario;
     String nuevocorreousuario;
@@ -57,16 +63,25 @@ public class UsersFragment extends Fragment {
     String claveconfirmacion;
     private UsersViewModel galleryViewModel;
     ListView listView;
+    ArrayList<Usuario> lista;
+    AdaptadorUsuario adaptador=null;
 
     EditText edtnombreusuario,edtcorreoeletronico,edtclave,edtclaveconfirmacion;
     Button btnguardar,btncancelar;
     ImageButton imbcrearnuevousuario;
+    Spinner sptipousuario,spgrupo;
+
+    Layout nuevousuario;
     private String idgrupousuario="1";
+    private int selecciontipousuario=0;
+    private int selecciongrupo=0;
+    String[] tipousuario={"Regular","Administrador"};
+    String[] grupo={"Seleccione grupo","1","2","3","4","5"};
 
     JsonObjectRequest jsonObjectRequest;
 
     StringRequest stringRequest;
-    ProgressDialog progreso;
+    Dialog dialog;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         galleryViewModel =
@@ -79,22 +94,56 @@ public class UsersFragment extends Fragment {
         edtclaveconfirmacion=root.findViewById(R.id.edtclaveconfirmar);
 
         imbcrearnuevousuario=root.findViewById(R.id.imbcrearnuevousuario);
-
+        //nuevousuario=root.findViewById(R.layout.agreganuevorusuario);
         btnguardar=root.findViewById(R.id.btnguardarnuevousuario);
+
+        listView = (ListView) root.findViewById(R.id.listausuario);
+        lista=new ArrayList<>();
+        adaptador=new AdaptadorUsuario(getContext(),R.layout.itemusuario,lista);
 
         imbcrearnuevousuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               mostrarDialogCrearUsuario(getActivity());
             }
-        });
+        })                                ;
 
+        listView.setAdapter(adaptador);
 
-            listView = (ListView) root.findViewById(R.id.listausuario);
-            downloadJSON("http://192.168.43.246/getGroupUsers.php");
+        downloadJSON("http://192.168.43.246/edelhome/getGroupUsers.php");
+
+       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               Toast.makeText(getContext(), "seleccionado"+position, Toast.LENGTH_SHORT).show();
+               //alertDialog();
+           }
+       });
+
 
         return root;
 
+    }
+
+    private void alertDialog() {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
+        dialog.setMessage("Por favor selecciona una opción");
+        dialog.setTitle("Realizar una acción");
+        dialog.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        Toast.makeText(getContext(),"Se realizó la acción",Toast.LENGTH_LONG).show();
+                    }
+                });
+        dialog.setNegativeButton("Cancelar",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getContext(),"Se canceló la acción",Toast.LENGTH_LONG).show();
+            }
+        });
+        AlertDialog alertDialog=dialog.create();
+        alertDialog.show();
     }
 
     private void mostrarDialogCrearUsuario(Activity activity /*, final int position*/){
@@ -107,12 +156,48 @@ public class UsersFragment extends Fragment {
         edtclave=dialog.findViewById(R.id.edtclave);
         edtclaveconfirmacion=dialog.findViewById(R.id.edtclaveconfirmar);
 
+        sptipousuario=dialog.findViewById(R.id.tipousuario);
+        spgrupo=dialog.findViewById(R.id.idgrupo);
         btnguardar=dialog.findViewById(R.id.btnguardarnuevousuario);
         btncancelar=dialog.findViewById(R.id.btncancelar);
 
-        int width = (int) (activity.getResources().getDisplayMetrics().widthPixels *1.2 );
+        ArrayAdapter aa = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, tipousuario);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sptipousuario.setAdapter(aa);
 
-        int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
+        ArrayAdapter bb = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, grupo);
+        bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spgrupo.setAdapter(bb);
+
+        sptipousuario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long idl) {
+                Toast.makeText(getContext(), tipousuario[position], Toast.LENGTH_SHORT).show();
+                selecciontipousuario=sptipousuario.getSelectedItemPosition();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spgrupo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long idl) {
+                Toast.makeText(getContext(), grupo[position], Toast.LENGTH_SHORT).show();
+                selecciongrupo=spgrupo.getSelectedItemPosition();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1 );
+
+        int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.7);
         dialog.getWindow().setLayout(width, height);
         dialog.show();
 
@@ -133,7 +218,7 @@ public class UsersFragment extends Fragment {
                      nuevaclaveusuario=edtclave.getText().toString().trim();
                      claveconfirmacion=edtclaveconfirmacion.getText().toString().trim();
                      Toast.makeText(getContext(),nuevonombreusuario,Toast.LENGTH_LONG).show();
-                    cargarWebService();
+                     cargarWebService();
 
                 }
 
@@ -163,7 +248,7 @@ public class UsersFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
                 try {
                     loadIntoListView(s);
                 } catch (JSONException e) {
@@ -195,82 +280,109 @@ public class UsersFragment extends Fragment {
     private void loadIntoListView(String json) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
         String[] stocks = new String[jsonArray.length()];
-            ArrayList<Usuario> usuariolista = new ArrayList<>();
+            String sesion="Último inicio de sesión: ";
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
-            Usuario ul=new Usuario();
-            ul.setNombre(obj.getString("username"));
-            ul.setLastlogin("last_login");
+            String nombre=obj.getString("username");
+            String ultimasesion=sesion.concat(obj.getString("last_login"));
             stocks[i] = obj.getString("username") + " " + obj.getString("last_login");
             System.out.println(stocks[i]);
-            usuariolista.add(ul);
-            System.out.println("LISTA "+usuariolista);
+            lista.add(new Usuario(nombre,ultimasesion));
+            System.out.println("LISTA "+lista);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_multiple_choice,stocks);
+        adaptador.notifyDataSetChanged();
+      //  ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,stocks);
         //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.itemusuario,stocks);
 
-        listView.setAdapter(arrayAdapter);
+       // listView.setAdapter(arrayAdapter);
 
     }
 
     private void cargarWebService() {
-
-        progreso=new ProgressDialog(getContext());
-        progreso.setMessage("Cargando...");
-        progreso.show();
-
-
-
-        String url=ip+"/createUser.php?";
-
-        stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.43.246/edelhome/createUser.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                progreso.hide();
-
-                if (response.trim().equalsIgnoreCase("registra")){
-                    edtnombreusuario.setText("");
-                    edtcorreoeletronico.setText("");
-                    edtclave.setText("");
-                    Toast.makeText(getContext(),"Se ha registrado con exito",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getContext(),"No se ha registrado ",Toast.LENGTH_SHORT).show();
-                    Log.i("RESPUESTA: ",""+response);
+                if(!response.isEmpty()){
+                    System.out.println("Vacio"+response.toString());
+                    Toast.makeText(getContext(), "Registrado satisfactoriamente."+response.toString(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getContext(), "No se ha podido conectar."+response.toString(), Toast.LENGTH_SHORT).show();
+                    System.out.println("Respuestar error"+response.toString());
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),"No se ha podido conectar",Toast.LENGTH_SHORT).show();
-                progreso.hide();
+                    System.out.println("ERROR"+error.toString());
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-              /*
-                String documento=campoDocumento.getText().toString();
-                String nombre=campoNombre.getText().toString();
-                String profesion=campoProfesion.getText().toString();
-
-               */
-
-                Map<String,String> parametros=new HashMap<>();
-                parametros.put("usuario",nuevonombreusuario);
-                parametros.put("correo",nuevocorreousuario);
-                parametros.put("clave",nuevaclaveusuario);
-
+                Map<String,String> parametros = new HashMap<String,String>();
+                parametros.put("username",nuevonombreusuario);
+                parametros.put("email",nuevocorreousuario);
+                parametros.put("pass",nuevaclaveusuario);
+                parametros.put("administrador",String.valueOf(selecciontipousuario));
+                parametros.put("group_id",String.valueOf(selecciongrupo));
                 return parametros;
             }
         };
 
-        /*
-        //request.add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
 
-         */
+
+
     }
 
+    private void deleteUser(final int idUsuario) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.43.246/edelhome/deleteUser.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.isEmpty()){
+                    System.out.println("Vacio"+response.toString());
+                    Toast.makeText(getContext(), "Eliminado satisfactoriamente."+response.toString(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getContext(), "No se ha podido conectar."+response.toString(), Toast.LENGTH_SHORT).show();
+                    System.out.println("Respuestar error"+response.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ERROR"+error.toString());
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<String,String>();
+                parametros.put("user_id",String.valueOf(idUsuario));
+                return parametros;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
