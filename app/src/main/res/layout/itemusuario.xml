@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tvnombreusuario"
@@ -13,10 +13,8 @@
         android:layout_marginStart="20dp"
         android:text="Nombre usuario"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="20dp"
         android:textAlignment="textStart"
-        tools:layout_editor_absoluteX="-4dp"
-        tools:layout_editor_absoluteY="4dp" />
+      />
     <TextView
         android:id="@+id/tvultimasesion"
         android:layout_width="match_parent"
@@ -24,19 +22,17 @@
         android:text="uLtimo inicio de sesion"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="10dp"
-        android:textAlignment="textStart"
-        android:layout_marginEnd="20dp"
-        tools:layout_editor_absoluteX="-4dp"
-        tools:layout_editor_absoluteY="4dp" />
+        android:textAlignment="textStart" />
 
     <Button
         android:id="@+id/btneliminar"
-        android:layout_width="372dp"
+        android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:background="#ff00"
         android:text="Eliminar"
+
+        android:textAlignment="center"
         android:textColor="@color/white" />
 
 </LinearLayout>
