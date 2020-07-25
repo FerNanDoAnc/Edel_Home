@@ -1,19 +1,14 @@
 package com.example.fera1999.edelh.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.Request;
@@ -22,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.fera1999.edelh.LoginActivity;
 import com.example.fera1999.edelh.R;
 
 import java.util.HashMap;
@@ -56,15 +50,15 @@ public class HomeFragment extends Fragment {
     }
     public void changeBulbStatus() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                "http://192.168.1.36:80/edelhome/editBulbState.php", new Response.Listener<String>() {
+                getString(R.string.ip_and_port)+"edelhome/editBulbState.php", new Response.Listener<String>() {
               @Override
               public void onResponse(String response) {
                   if(!bulbStatus) {
-                      btnEncender.setBackgroundResource(R.drawable.boton_encender);
+                      btnEncender.setBackgroundResource(R.drawable.ic_turn_on);
                       bulbStatus = true;
                       Toast.makeText(getContext(), "Foco Apagado", Toast.LENGTH_SHORT).show();
                   } else {
-                      btnEncender.setBackgroundResource(R.drawable.boton_apagar);
+                      btnEncender.setBackgroundResource(R.drawable.ic_turn_off);
                       bulbStatus = false;
                       Toast.makeText(getContext(), "Foco Encendido", Toast.LENGTH_SHORT).show();
                   }

@@ -3,6 +3,11 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
+        <entry key="imageWizard">
+          <value>
+            <PersistentState />
+          </value>
+        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -28,8 +33,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_person_24" />
-                            <entry key="sourceFile" value="C:\ProjectsAndroid\Edel_Home" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_turn_off" />
+                            <entry key="sourceFile" value="C:\Users\benja\Pictures\turnoff.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -50,7 +50,9 @@ public class ChangePasswordFragment extends Fragment {
         edtNewPassword = root.findViewById(R.id.edtNewPassword);
         edtNewPasswordConfirm = root.findViewById(R.id.edtNewPasswordConfirm);
         btnChangePassword = root.findViewById(R.id.btnChangePassword);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()).getApplicationContext());
+
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +76,7 @@ public class ChangePasswordFragment extends Fragment {
         }
         else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                    "http://192.168.1.10:80/edelhome/changePassword.php", new Response.Listener<String>() {
+                    getString(R.string.ip_and_port)+"edelhome/changePassword.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Contraseña cambiada con éxito", Toast.LENGTH_LONG).show();

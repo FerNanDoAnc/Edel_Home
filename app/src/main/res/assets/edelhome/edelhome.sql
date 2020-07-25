@@ -72,6 +72,7 @@ BEGIN
    );
 END//
 
+call create Swtich('oyopiz',0,1);
 DROP PROCEDURE IF EXISTS editSwitch;
 DELIMITER //
 CREATE PROCEDURE editSwitch(
