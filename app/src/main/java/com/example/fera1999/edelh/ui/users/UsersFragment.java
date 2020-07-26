@@ -11,6 +11,7 @@ import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,8 +21,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +58,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class UsersFragment extends Fragment implements  View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class UsersFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     String ip="192.168.43.246";
     String nuevonombreusuario;
     String nuevocorreousuario;
@@ -67,14 +70,17 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
     AdaptadorUsuario adaptador=null;
 
     EditText edtnombreusuario,edtcorreoeletronico,edtclave,edtclaveconfirmacion;
+    EditText edtactualizarnombreusuario;
     Button btnguardar,btncancelar;
     ImageButton imbcrearnuevousuario;
     Spinner sptipousuario,spgrupo;
 
+    String nombreusuarioeliminar="";
     Layout nuevousuario;
     private String idgrupousuario="1";
     private int selecciontipousuario=0;
     private int selecciongrupo=0;
+    int eliminaridususario=0;
     String[] tipousuario={"Regular","Administrador"};
     String[] grupo={"Seleccione grupo","1","2","3","4","5"};
 
@@ -94,32 +100,50 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
         edtclaveconfirmacion=root.findViewById(R.id.edtclaveconfirmar);
 
         imbcrearnuevousuario=root.findViewById(R.id.imbcrearnuevousuario);
-        //nuevousuario=root.findViewById(R.layout.agreganuevorusuario);
+
         btnguardar=root.findViewById(R.id.btnguardarnuevousuario);
 
         listView = (ListView) root.findViewById(R.id.listausuario);
         lista=new ArrayList<>();
         adaptador=new AdaptadorUsuario(getContext(),R.layout.itemusuario,lista);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            alertDialog();
+            eliminaridususario=lista.get(position).getId();
+            nombreusuarioeliminar=lista.get(position).getNombre();
+            System.out.println(nombreusuarioeliminar+" "+eliminaridususario);
+         }
+        });
+
+        listView.setAdapter(adaptador);
+
+        imbcrearnuevousuario.setFocusable(false);
         imbcrearnuevousuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               mostrarDialogCrearUsuario(getActivity());
             }
-        })                                ;
+        }) ;
 
-        listView.setAdapter(adaptador);
 
         downloadJSON("http://192.168.43.246/edelhome/getGroupUsers.php");
+   /*
+        final ToggleButton tbeditdelete=root.findViewById(R.id.tbactualizareliminar);
 
-       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           @Override
-           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               Toast.makeText(getContext(), "seleccionado"+position, Toast.LENGTH_SHORT).show();
-               //alertDialog();
-           }
-       });
-
+        tbeditdelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tbeditdelete.isChecked()){
+                    Toast.makeText(getContext(),"eliminar",Toast.LENGTH_LONG).show();
+                    deleteUser(eliminaridususario);
+                }else{
+                    Toast.makeText(getContext(),"actualizar",Toast.LENGTH_LONG).show();
+                    mostrarDialogCambiarNombre(getActivity());
+                }
+            }
+        }); */
 
         return root;
 
@@ -127,15 +151,18 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
 
     private void alertDialog() {
         AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
-        dialog.setMessage("Por favor selecciona una opción");
-        dialog.setTitle("Realizar una acción");
-        dialog.setPositiveButton("Ok",
+        dialog.setMessage("Eliminar Usuario");
+        dialog.setTitle("¿Estás seguro que deseas eliminar al usuario "+nombreusuarioeliminar+" ?");
+        dialog.setPositiveButton("Eliminar",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,
                                         int which) {
+                        System.out.println("DELETE ID "+eliminaridususario);
+                        deleteUser(eliminaridususario);
                         Toast.makeText(getContext(),"Se realizó la acción",Toast.LENGTH_LONG).show();
                     }
                 });
+
         dialog.setNegativeButton("Cancelar",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -144,6 +171,44 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
         });
         AlertDialog alertDialog=dialog.create();
         alertDialog.show();
+    }
+
+    private void mostrarDialogCambiarNombre(Activity activity /*, final int position*/) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.setContentView(R.layout.actualizarnombreusuario);
+        dialog.setTitle("Cambiar nombre");
+
+        edtactualizarnombreusuario = dialog.findViewById(R.id.edtactualizarnombreusuario);
+
+        Button btncambiarnombreusuario = dialog.findViewById(R.id.btncambiarnombreusuario);
+        Button btncancelarcambionombre = dialog.findViewById(R.id.btncancelarcambionombre);
+
+        int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.5);
+
+        int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
+        dialog.getWindow().setLayout(width, height);
+        dialog.show();
+
+        btncambiarnombreusuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(edtactualizarnombreusuario.getText().toString().trim())) {
+                    edtactualizarnombreusuario.setError("El campo esta vacio");
+                } else {
+                    nuevonombreusuario = edtactualizarnombreusuario.getText().toString().trim();
+                    Toast.makeText(getContext(), nuevonombreusuario, Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+        });
+
+        btncancelarcambionombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void mostrarDialogCrearUsuario(Activity activity /*, final int position*/){
@@ -219,6 +284,7 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
                      claveconfirmacion=edtclaveconfirmacion.getText().toString().trim();
                      Toast.makeText(getContext(),nuevonombreusuario,Toast.LENGTH_LONG).show();
                      cargarWebService();
+                     dialog.dismiss();
 
                 }
 
@@ -244,11 +310,10 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
                 super.onPreExecute();
             }
 
-
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-               // Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+
                 try {
                     loadIntoListView(s);
                 } catch (JSONException e) {
@@ -283,18 +348,15 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
             String sesion="Último inicio de sesión: ";
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
+            int idusuario=obj.getInt("user_id");
             String nombre=obj.getString("username");
             String ultimasesion=sesion.concat(obj.getString("last_login"));
             stocks[i] = obj.getString("username") + " " + obj.getString("last_login");
             System.out.println(stocks[i]);
-            lista.add(new Usuario(nombre,ultimasesion));
+            lista.add(new Usuario(idusuario,nombre,ultimasesion));
             System.out.println("LISTA "+lista);
         }
         adaptador.notifyDataSetChanged();
-      //  ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,stocks);
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.itemusuario,stocks);
-
-       // listView.setAdapter(arrayAdapter);
 
     }
 
@@ -303,19 +365,15 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
             @Override
             public void onResponse(String response) {
                 if(!response.isEmpty()){
-                    System.out.println("Vacio"+response.toString());
-                    Toast.makeText(getContext(), "Registrado satisfactoriamente."+response.toString(), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    System.out.println("Vacio"+response);
                 } else {
-                    Toast.makeText(getContext(), "No se ha podido conectar."+response.toString(), Toast.LENGTH_SHORT).show();
-                    System.out.println("Respuestar error"+response.toString());
+                    System.out.println("Respuestar error"+response);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                     System.out.println("ERROR"+error.toString());
-                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -343,10 +401,8 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
             public void onResponse(String response) {
                 if(!response.isEmpty()){
                     System.out.println("Vacio"+response.toString());
-                    Toast.makeText(getContext(), "Eliminado satisfactoriamente."+response.toString(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(getContext(), "No se ha podido conectar."+response.toString(), Toast.LENGTH_SHORT).show();
                     System.out.println("Respuestar error"+response.toString());
                 }
             }
@@ -354,7 +410,6 @@ public class UsersFragment extends Fragment implements  View.OnClickListener, Ad
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("ERROR"+error.toString());
-                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
