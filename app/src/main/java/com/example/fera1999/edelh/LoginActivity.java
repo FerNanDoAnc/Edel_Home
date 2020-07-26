@@ -22,6 +22,9 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
+    EditText clave, usuario;
+    TextView tverror,tvcomunicate;
+    Button login;
     EditText edtClave, edtUsuario;
     Button btnLogin;
     @Override
@@ -30,10 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         usuario=findViewById(R.id.usuario);
         clave=findViewById(R.id.clave);
-
-        tverror=findViewById(R.id.tvError);
-
-        tverror.setVisibility(View.INVISIBLE);
         edtUsuario=findViewById(R.id.usuario);
         edtClave=findViewById(R.id.clave);
         btnLogin = findViewById(R.id.btnLogin);
@@ -42,11 +41,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 doLogin();
+
             }
         });
     }
+
+
+
+
     public void doLogin() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.1.44:80/edelhome/doLogin.php", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.43.246/edelhome/doLogin.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if(!response.isEmpty()){
@@ -73,5 +77,65 @@ public class LoginActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+                 requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequest);
+
+       /*
+       if((edtUsuario.getText().toString().equalsIgnoreCase("usuario") )&&(edtClave.getText().toString().equals("1234"))){
+        Intent intent = new Intent(LoginActivity.this, MenuPrincipalActivity.class);
+        intent.putExtra("usuario", usuario.getText().toString());
+        intent.putExtra("usuario", edtUsuario.getText().toString());
+        startActivity(intent);
+    }else{
+        Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
+    }
+        }else{
+            Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
+        }
+
+
+        public void Login(View view) {
+            if((usuario.getText().toString().equalsIgnoreCase("usuario") )&&(clave.getText().toString().equals("1234"))){
+
+                public void doLogin() {
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.1.10:80/edelhome/doLogin.php", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            if(!response.isEmpty()){
+                                Intent intent = new Intent(getApplicationContext(), MenuPrincipalActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrecta.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }) //, new Response.ErrorListener()
+                {
+                    /*    @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }){
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> parametros = new HashMap<String,String>();
+                            parametros.put("usuario",edtUsuario.getText().toString());
+                            parametros.put("password",edtClave.getText().toString());
+                            return parametros;
+                        }
+                    };
+
+               */
+
+
+        }
+
+    public void irmenu(View view) {
+
+        Intent intent = new Intent(LoginActivity.this, MenuDrawerActivity.class);
+        startActivity(intent);
     }
 }
+
+
+

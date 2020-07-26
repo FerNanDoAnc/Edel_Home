@@ -11,8 +11,9 @@
     <ListView
         android:id="@+id/listausuario"
         android:layout_width="match_parent"
+        android:layout_marginTop="80dp"
         android:layout_height="450dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="180dp"
         android:paddingStart="2dp"
         android:paddingEnd="20dp"
         android:divider="@android:color/transparent"

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/bordesitemlista">
 
     <TextView
         android:id="@+id/tvnombreusuario"
@@ -25,14 +27,12 @@
         android:textAlignment="textStart" />
 
     <Button
-        android:id="@+id/btneliminar"
+        android:id="@+id/tbactualizareliminar"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="37dp"
         android:layout_marginStart="20dp"
-        android:background="#ff00"
+        android:background="#f00"
         android:text="Eliminar"
-
-        android:textAlignment="center"
         android:textColor="@color/white" />
 
 </LinearLayout>

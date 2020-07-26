@@ -23,6 +23,8 @@ public class MenuDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_benjamin_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 /*        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

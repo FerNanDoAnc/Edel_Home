@@ -23,10 +23,10 @@ public class AdaptadorUsuario extends BaseAdapter {
     private int layout;
     private ArrayList<Usuario> listausuario;
 
-    public AdaptadorUsuario(Context context, int layout, ArrayList<Usuario> listaproducto) {
+    public AdaptadorUsuario(Context context, int layout, ArrayList<Usuario> listausuario) {
         this.context = context;
         this.layout = layout;
-        this.listausuario = listaproducto;
+        this.listausuario = listausuario;
     }
 
     @Override
