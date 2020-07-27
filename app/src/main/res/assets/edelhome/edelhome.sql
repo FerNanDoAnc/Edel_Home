@@ -40,6 +40,14 @@ BEGIN
    SELECT * FROM usuario WHERE group_id = var_id;
 END//
 
+DROP PROCEDURE IF EXISTS getGroupSwitches;
+DELIMITER //
+CREATE PROCEDURE getGroupUsers(
+  IN var_id SMALLINT(5))
+BEGIN
+   SELECT * FROM switch WHERE group_id = var_id;
+END//
+
 DROP PROCEDURE IF EXISTS createUser;
 DELIMITER //
 CREATE PROCEDURE createUser(
@@ -72,7 +80,6 @@ BEGIN
    );
 END//
 
-call create Swtich('oyopiz',0,1);
 DROP PROCEDURE IF EXISTS editSwitch;
 DELIMITER //
 CREATE PROCEDURE editSwitch(
@@ -157,5 +164,6 @@ END//
 
 use edelhome;
 call createGroup();
+call createSwtich('oyopiz',0,1);
 call createUser('admin','admin@edelhome.com','12345',true,1)
 call createUser('user','user@edelhome.com','12345',false,1)

@@ -1,19 +1,19 @@
 package com.example.fera1999.edelh.ui.home;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.Request;
@@ -22,20 +22,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.fera1999.edelh.LoginActivity;
 import com.example.fera1999.edelh.R;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import com.loopj.android.http.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import cz.msebera.android.httpclient.Header;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -43,6 +39,9 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     Spinner spinner_switch;
     ImageButton btnEncender;
+    RequestParams params= new RequestParams();
+    SharedPreferences sharedPreferences;
+
     Boolean bulbStatus = false;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,9 +53,10 @@ public class HomeFragment extends Fragment {
         btnEncender= root.findViewById(R.id.btnEncender);
         spinner_switch=root.findViewById(R.id.spinner_switch);
 
-
-        cliente=new AsyncHttpClient();
-        llenarSpinner();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()).getApplicationContext());
+        String group_id = sharedPreferences.getString("group_id","");
+        cliente = new AsyncHttpClient();
+        llenarSpinner(group_id);
 
         btnEncender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,11 +75,11 @@ public class HomeFragment extends Fragment {
               @Override
               public void onResponse(String response) {
                   if(!bulbStatus) {
-                      btnEncender.setBackgroundResource(R.drawable.ic_turn_on);
+                      btnEncender.setImageResource(R.drawable.turnon);
                       bulbStatus = true;
                       Toast.makeText(getContext(), "Foco Apagado", Toast.LENGTH_SHORT).show();
                   } else {
-                      btnEncender.setBackgroundResource(R.drawable.ic_turn_off);
+                      btnEncender.setImageResource(R.drawable.turnoff);
                       bulbStatus = false;
                       Toast.makeText(getContext(), "Foco Encendido", Toast.LENGTH_SHORT).show();
                   }
@@ -113,32 +113,43 @@ public class HomeFragment extends Fragment {
             requestQueue.add(stringRequest);
     }
 
-    public void llenarSpinner() {
-        String URL="http://192.168.1.36:80/edelhome/listSwitch.php";
-        cliente.post(URL, new AsyncHttpResponseHandler() {
+    public void llenarSpinner(String group_id) {
+        String URL= getString(R.string.ip_and_port) +"edelhome/listSwitch.php";
+        params.put("group_id",group_id);
+        cliente.post(URL, params,new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 if (statusCode==200){
                     cargarSpinner(new String(responseBody));
                 }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Error al traer la lista de switch", Toast.LENGTH_LONG).show();
             }
         });
     }
     private void cargarSpinner(String respuesta){
-        ArrayList<Foco>lista=new ArrayList<Foco>();
+        ArrayList<Foco>lista= new ArrayList<>();
         try {
             JSONArray jsonArreglo=new JSONArray(respuesta);
             for(int i=0;i<jsonArreglo.length();i++){
+                if(i == 0){
+                    String bulbState = jsonArreglo.getJSONObject(i).getString("bulb_state");
+                    if (bulbState == "1"){
+                        btnEncender.setImageResource(R.drawable.turnon);
+                        bulbStatus = true;
+                    }else {
+                        btnEncender.setImageResource(R.drawable.turnoff);
+                        bulbStatus = false;
+                    }
+                }
                 Foco foco= new Foco();
                 foco.setPlace(jsonArreglo.getJSONObject(i).getString("place"));
                 lista.add(foco);
             }
-            ArrayAdapter<Foco> focoArrayAdapter=new ArrayAdapter<Foco>(Objects.requireNonNull(getActivity()).getApplicationContext(), android.R.layout.simple_dropdown_item_1line, lista);
+            ArrayAdapter<Foco> focoArrayAdapter= new ArrayAdapter<>(Objects.requireNonNull(getActivity()).getApplicationContext(), android.R.layout.simple_dropdown_item_1line, lista);
             spinner_switch.setAdapter(focoArrayAdapter);
         } catch (JSONException e) {
             e.printStackTrace();

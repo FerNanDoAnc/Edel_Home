@@ -4,47 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="@string/button_encender"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="@string/button_encender"
-        android:textAlignment="center"
-        android:textSize="20sp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="303dp"
+        android:layout_height="316dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="241dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="174dp"
+        app:cardCornerRadius="160dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/btnEncender"
-        android:layout_width="200sp"
-        android:layout_height="270sp"
-        android:layout_marginStart="24sp"
-        android:layout_marginTop="24sp"
-        android:layout_marginEnd="24sp"
-        android:layout_marginBottom="24sp"
-        android:contentDescription="@string/button_encender"
-        android:src="?attr/selectableItemBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/btnEncender"
+            android:layout_width="311dp"
+            android:layout_height="329dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/button_encender"
+            android:scaleType="centerCrop"
+            android:src="?attr/selectableItemBackground" />
+    </androidx.cardview.widget.CardView>
 
     <Spinner
         android:id="@+id/spinner_switch"
         android:layout_width="200sp"
         android:layout_height="70sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnEncender"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="106dp"
+        android:layout_marginBottom="553dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.637" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
