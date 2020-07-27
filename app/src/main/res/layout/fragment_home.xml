@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="@string/button_encender"
     tools:context=".ui.home.HomeFragment">
 
     <TextView
@@ -13,10 +14,37 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:onClick="@string/button_encender"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnEncender"
+        android:layout_width="200sp"
+        android:layout_height="270sp"
+        android:layout_marginStart="24sp"
+        android:layout_marginTop="24sp"
+        android:layout_marginEnd="24sp"
+        android:layout_marginBottom="24sp"
+        android:contentDescription="@string/button_encender"
+        android:src="?attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner_switch"
+        android:layout_width="200sp"
+        android:layout_height="70sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEncender"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.637" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

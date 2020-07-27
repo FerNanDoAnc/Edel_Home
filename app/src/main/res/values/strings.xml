@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">EdelH</string>
+    <string name="app_name">EdelHome</string>
     <string name="title_activity_main_menu">MainMenu</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">EdelHome</string>
+    <string name="nav_header_subtitle">www.edelhome.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -13,13 +13,17 @@
     <string name="menu_switches">Habitaciones</string>
     <string name="menu_change_password">Cambiar contraseña</string>
     <string name="title_main_menu">Menu principal</string>
-    <string name="text_login_welcome">Ingrese tus datos</string>
+    <string name="text_login_welcome">Ingresa tus datos</string>
     <string name="text_login_input_user_hint">Usuario</string>
+    <string name="login_text_new_user">¿Nuevo usuario o olvidaste tu clave?</string>
     <string name="text_login_input_password_hint">Contraseña</string>
     <string name="text_login_button_do_login" >Iniciar Sesión</string>
-    <string name="input_actual_password">Ingrese su contraseña actual</string>
-    <string name="input_new_password">Ingrese su nueva contraseña</string>
-    <string name="input_new_password_confirm">Confirme su nueva contraseña</string>
+    <string name="text_close_session_button" >Cerrar Sesión</string>
+    <string name="input_actual_password">Ingresa tu contraseña actual</string>
+    <string name="input_new_password">Ingresa tu nueva contraseña</string>
+    <string name="input_new_password_confirm">Confirma tu nueva contraseña</string>
     <string name="button_new_password_save">Actualizar contraseña</string>
+    <string name="button_crear_usuario">Crear</string>
+    <string name="button_encender">Encender</string>
     <string name="empty_contentDescription"> </string>
 </resources>

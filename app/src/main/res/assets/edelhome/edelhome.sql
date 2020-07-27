@@ -17,6 +17,7 @@ CREATE TABLE usuario (
   pass VARCHAR (50) NOT NULL,
   administrador BOOLEAN NOT NULL,
   group_id SMALLINT (5) NOT NULL,
+  last_login CHAR(10),
   CONSTRAINT FOREIGN KEY fk_group_id(group_id)
     REFERENCES grupo_familia (group_id)
 );
@@ -101,9 +102,10 @@ DROP PROCEDURE IF EXISTS changePassword;
 DELIMITER //
 CREATE PROCEDURE changePassword(
   IN var_user_id SMALLINT(5),
-  IN new_pass VARCHAR(50))
+  IN var_new_pass VARCHAR(50),
+  IN var_actual_pass VARCHAR(50))
 BEGIN
-   UPDATE usuario SET pass = new_pass WHERE user_id = var_user_id;
+   UPDATE usuario SET pass = var_new_pass WHERE user_id = var_user_id AND pass = var_actual_pass;
 END//
 
 DROP PROCEDURE IF EXISTS updateUserData;
@@ -123,10 +125,22 @@ DROP PROCEDURE IF EXISTS doLogin;
 DELIMITER //
 CREATE PROCEDURE doLogin(
   IN user_name VARCHAR (30),
-  IN var_pass VARCHAR (50)
+  IN var_pass VARCHAR (50),
+  IN var_last_login CHAR(10)
 )
 BEGIN
   SELECT * FROM usuario WHERE username = user_name AND pass = var_pass;
+  UPDATE usuario SET last_login = var_last_login WHERE username = user_name AND pass = var_pass;
+END //
+
+DROP PROCEDURE IF EXISTS verificateUser;
+DELIMITER //
+CREATE PROCEDURE verificateUser(
+  IN var_user_id VARCHAR (30),
+  IN var_pass VARCHAR (50)
+)
+BEGIN
+  SELECT * FROM usuario WHERE user_id = var_user_id AND pass = var_pass;
 END //
 
 -- TO WORK --
@@ -135,6 +149,12 @@ DELIMITER //
 CREATE PROCEDURE createGroup()
 BEGIN
    INSERT INTO grupo_familia VALUES ();
-   SELECT last_insert_id();
 END//
 
+-- CREANDO PRIMER USUARIO --
+
+
+use edelhome;
+call createGroup();
+call createUser('admin','admin@edelhome.com','12345',true,1)
+call createUser('user','user@edelhome.com','12345',false,1)

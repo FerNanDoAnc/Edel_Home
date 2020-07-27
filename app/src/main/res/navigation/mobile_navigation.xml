@@ -28,4 +28,9 @@
         android:name="com.example.fera1999.edelh.ui.change_password.ChangePasswordFragment"
         android:label="@string/menu_change_password"
         tools:layout="@layout/fragment_change_password" />
+
+    <fragment
+        android:id="@+id/nav_closeSession"
+        android:name="com.example.fera1999.edelh.ui.close_session.CloseSessionFragment"
+        android:label="@string/text_close_session_button"/>
 </navigation>
