@@ -1,12 +1,12 @@
 <?php
 
 include 'connection.php';
-#$var_id = $_POST['group_id'];
-#$var_id = 1;
+$var_id = $_GET['group_id'];
+// $var_id = 1;
 # Generando la consulta
-$consulta= "SELECT * FROM usuario where group_id=2;";
+$consulta= "call getGroupUsers('".$var_id."')";
 # guardando el resultado de la consulta
-$resultado = $connection -> query($consulta) or die('Error al obtener los usuarios del grupo '.mysqli_error($connection));
+$resultado = $connection -> query($consulta) or die('Error al actualizar los usuarios del grupo '.mysqli_error($connection));
  while($row=$resultado -> fetch_array()){
      # Añadiendo resultado en una variable
      $users[] = array_map('utf8_encode', $row);

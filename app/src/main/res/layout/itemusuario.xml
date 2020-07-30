@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,15 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="Nombre usuario"
+        android:text="@string/text_login_input_user_hint"
         android:layout_marginBottom="10dp"
-        android:textAlignment="textStart"
-      />
+        android:textAlignment="textStart" />
     <TextView
         android:id="@+id/tvultimasesion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="uLtimo inicio de sesion"
+        android:text="@string/user_last_login"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="10dp"
         android:textAlignment="textStart" />
@@ -32,7 +29,7 @@
         android:layout_height="37dp"
         android:layout_marginStart="20dp"
         android:background="#f00"
-        android:text="Eliminar"
+        android:text="@string/button_delete"
         android:textColor="@color/white" />
 
 </LinearLayout>

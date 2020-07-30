@@ -1,8 +1,9 @@
 <?php
 
 include 'connection.php';
+$var_group_id = $_POST['group_id'];
 # declaramos las variables a usar, $_POST significa los datos que hemos enviado a este archivo
-$sql ="select * from switch";
+$sql ="call getGroupSwitches('".$var_group_id."')";
 $datos=Array();
 $result=mysqli_query($connection,$sql);
 while($row=mysqli_fetch_object($result)){

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,10 +17,13 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Objects;
+
 public class MenuDrawerActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,16 @@ public class MenuDrawerActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        String isAdministrator = sharedPref.getString("isAdministrator","0");
+
+        if(Objects.requireNonNull(isAdministrator).contentEquals("0")){
+            Menu menu =navigationView.getMenu();
+            MenuItem target = menu.findItem(R.id.nav_users);
+            target.setVisible(false);
+            MenuItem target2 = menu.findItem(R.id.nav_switches);
+            target2.setVisible(false);
+        }
+
     }
 
     @Override

@@ -8,7 +8,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="ip_and_port">http://192.168.1.17:80/</string>
+    <string name="ip_and_port">http://192.168.1.23:80/</string>
 
     <string name="menu_home">Encendido/Apagado</string>
     <string name="menu_users">Usuarios</string>
@@ -16,7 +16,7 @@
     <string name="menu_change_password">Cambiar contraseña</string>
     <string name="title_main_menu">Menu principal</string>
     <string name="text_login_welcome">Ingresa tus datos</string>
-    <string name="text_login_input_user_hint">Usuario</string>
+    <string name="text_login_input_user_hint">Nombre de usuario</string>
     <string name="login_text_new_user">¿Nuevo usuario o olvidaste tu clave?</string>
     <string name="text_login_input_password_hint">Contraseña</string>
     <string name="text_login_button_do_login" >Iniciar Sesión</string>
@@ -25,7 +25,16 @@
     <string name="input_new_password">Ingresa tu nueva contraseña</string>
     <string name="input_new_password_confirm">Confirma tu nueva contraseña</string>
     <string name="button_new_password_save">Actualizar contraseña</string>
+    <string name="input_confirm_password">Confirma tu contraseña</string>
+    <string name="input_password">Ingresa tu nueva contraseña</string>
+    <string name="input_email">Ingresa tu correo electrónico</string>
+    <string name="question_delete_user_confirm">¿Estás seguro que deseas eliminar al usuario?</string>
+    <string name="user_last_login">Útimo inicio de sesión</string>
     <string name="button_crear_usuario">Crear</string>
     <string name="button_encender">Encender</string>
-    <string name="empty_contentDescription"></string>
+    <string name="button_delete">Eliminar</string>
+    <string name="button_cancelar">Cancelar</string>
+    <string name="button_guardar">Guardar</string>
+    <string name="button_change">Cambiar</string>
+    <string name="empty_contentDescription"/>
 </resources>

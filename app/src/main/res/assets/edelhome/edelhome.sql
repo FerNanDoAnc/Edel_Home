@@ -17,7 +17,6 @@ CREATE TABLE usuario (
   pass VARCHAR (50) NOT NULL,
   administrador BOOLEAN NOT NULL,
   group_id SMALLINT (5) NOT NULL,
-  last_login CHAR(10),
   CONSTRAINT FOREIGN KEY fk_group_id(group_id)
     REFERENCES grupo_familia (group_id)
 );
@@ -42,10 +41,10 @@ END//
 
 DROP PROCEDURE IF EXISTS getGroupSwitches;
 DELIMITER //
-CREATE PROCEDURE getGroupUsers(
-  IN var_id SMALLINT(5))
+CREATE PROCEDURE getGroupSwitches(
+  IN var_group_id SMALLINT(5))
 BEGIN
-   SELECT * FROM switch WHERE group_id = var_id;
+   SELECT * FROM switch WHERE group_id = var_group_id;
 END//
 
 DROP PROCEDURE IF EXISTS createUser;
@@ -133,13 +132,12 @@ DROP PROCEDURE IF EXISTS doLogin;
 DELIMITER //
 CREATE PROCEDURE doLogin(
   IN user_name VARCHAR (30),
-  IN var_pass VARCHAR (50),
-  IN var_last_login CHAR(10)
+  IN var_pass VARCHAR (50)
 )
 BEGIN
   SELECT * FROM usuario WHERE username = user_name AND pass = var_pass;
-  UPDATE usuario SET last_login = var_last_login WHERE username = user_name AND pass = var_pass;
 END //
+
 
 DROP PROCEDURE IF EXISTS verificateUser;
 DELIMITER //
@@ -151,19 +149,26 @@ BEGIN
   SELECT * FROM usuario WHERE user_id = var_user_id AND pass = var_pass;
 END //
 
+DROP PROCEDURE IF EXISTS deleteUser;
+DELIMITER //
+CREATE PROCEDURE deleteUser(
+  IN var_user_id VARCHAR (30)
+)
+BEGIN
+  DELETE FROM usuario WHERE user_id = var_user_id;
+END //
+
 -- TO WORK --
 DROP PROCEDURE IF EXISTS createGroup;
 DELIMITER //
 CREATE PROCEDURE createGroup()
 BEGIN
    INSERT INTO grupo_familia VALUES ();
+   SELECT last_insert_id();
 END//
 
--- CREANDO PRIMER USUARIO --
+SELECT * FROM edelhome.grupo_familia;
+call createUser('johnDoe', 'edelhome@gmail.com', 'idat1234', true, 1);
+SELECT * from edelhome.usuario;
 
-
-use edelhome;
-call createGroup();
-call createSwtich('oyopiz',0,1);
-call createUser('admin','admin@edelhome.com','12345',true,1)
-call createUser('user','user@edelhome.com','12345',false,1)
+SELECT * FROM edelhome.usuario WHERE username = 'johnDoe' AND pass = '41564546';

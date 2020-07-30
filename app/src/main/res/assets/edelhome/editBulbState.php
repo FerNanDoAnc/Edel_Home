@@ -7,7 +7,7 @@ $var_bulb_state = $_POST['bulb_state'];
 $arduino_request = $_POST['arduinoRequest'];
 
 #enviando el dato a arduino
-$port = fopen("COM1", "w+");
+$port = fopen("COM5", "w+");
 sleep(2);
 
 fwrite($port, $arduino_request);

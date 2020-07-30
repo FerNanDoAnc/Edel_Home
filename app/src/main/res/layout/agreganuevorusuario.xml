@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,26 +10,27 @@
         android:drawablePadding="20dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:hint="Nombre usuario"
+        android:hint="@string/text_login_input_user_hint"
         android:drawableStart="@drawable/ic_person"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="60dp"
         android:textAlignment="textStart"
-   />
-
+        android:inputType="text"
+        android:autofillHints="@string/empty_contentDescription"/>
 
     <EditText
         android:id="@+id/edtcorreoelectronico"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Correo electrónico"
+        android:hint="@string/input_email"
         android:drawablePadding="20dp"
         android:drawableStart="@drawable/ic_email_black"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="10dp"
         android:textAlignment="textStart"
- />
+        android:inputType="text"
+        android:autofillHints="@string/empty_contentDescription"/>
 
     <Spinner
         android:id="@+id/tipousuario"
@@ -41,27 +40,20 @@
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="10dp"/>
 
-    <Spinner
-        android:id="@+id/idgrupo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="10dp"/>
-
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:hint="Nueva ontraseña"
+        android:hint="@string/input_password"
         android:drawablePadding="20dp"
         android:id="@+id/edtclave"
         android:drawableStart="@drawable/ic_clave"
         android:textAlignment="textStart"
-        android:layout_marginEnd="60dp"/>
+        android:layout_marginEnd="60dp"
+        android:autofillHints="@string/empty_contentDescription"/>
+
     <EditText
         android:id="@+id/edtclaveconfirmar"
         android:layout_width="match_parent"
@@ -70,16 +62,18 @@
         android:drawablePadding="20dp"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:hint="Confirmar ontraseña"
+        android:hint="@string/input_confirm_password"
         android:drawableStart="@drawable/ic_clave"
         android:textAlignment="textStart"
-        android:layout_marginEnd="60dp"/>
+        android:layout_marginEnd="60dp"
+        android:autofillHints="@string/empty_contentDescription"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginStart="10dp"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_marginEnd="60dp">
 
         <Button
@@ -89,7 +83,8 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="10dp"
             android:background="#ff00"
-            android:text="Cancelar"
+            android:text="@string/button_cancelar"
+            style="?android:attr/buttonBarButtonStyle"
             android:textColor="@color/white" />
 
         <Button
@@ -99,7 +94,8 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="20dp"
             android:background="#000"
-            android:text="Guardar"
+            android:text="@string/button_guardar"
+            style="?android:attr/buttonBarButtonStyle"
             android:textColor="@color/white" />
 
     </LinearLayout>
