@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fera1999.edelh.R;
@@ -27,6 +28,7 @@ import com.loopj.android.http.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +57,10 @@ public class HomeFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()).getApplicationContext());
         String group_id = sharedPreferences.getString("group_id","");
+        String switch_id = sharedPreferences.getString("switch_id","");
         cliente = new AsyncHttpClient();
         llenarSpinner(group_id);
+
 
         btnEncender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +118,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void llenarSpinner(String group_id) {
-        String URL= getString(R.string.ip_and_port) +"edelhome/listSwitch.php";
+        String URL= getString(R.string.ip_and_port) +"edelhome/listSwitch.php?group_id="+spinner_switch.getTextAlignment()+"";
         params.put("group_id",group_id);
         cliente.post(URL, params,new AsyncHttpResponseHandler() {
             @Override
@@ -149,7 +153,7 @@ public class HomeFragment extends Fragment {
                 foco.setPlace(jsonArreglo.getJSONObject(i).getString("place"));
                 lista.add(foco);
             }
-            ArrayAdapter<Foco> focoArrayAdapter= new ArrayAdapter<>(Objects.requireNonNull(getActivity()).getApplicationContext(), android.R.layout.simple_dropdown_item_1line, lista);
+            ArrayAdapter<Foco> focoArrayAdapter= new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, lista);
             spinner_switch.setAdapter(focoArrayAdapter);
         } catch (JSONException e) {
             e.printStackTrace();
