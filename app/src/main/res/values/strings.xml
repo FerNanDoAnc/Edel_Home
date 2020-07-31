@@ -8,7 +8,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="ip_and_port">http://192.168.1.37:80/</string>
+    <string name="ip_and_port">http://192.168.1.23:80/</string>
 
     <string name="menu_home">Encendido/Apagado</string>
     <string name="menu_users">Usuarios</string>
@@ -30,9 +30,12 @@
     <string name="input_email">Ingresa tu correo electrónico</string>
     <string name="question_delete_user_confirm">¿Estás seguro que deseas eliminar al usuario?</string>
     <string name="user_last_login">Útimo inicio de sesión</string>
+    <string name="switch_bulb_state">Estado del foco</string>
+    <string name="switch_place_name">Habitación</string>
     <string name="button_crear_usuario">Crear</string>
     <string name="button_encender">Encender</string>
     <string name="button_delete">Eliminar</string>
+    <string name="button_edit">Editar</string>
     <string name="button_cancelar">Cancelar</string>
     <string name="button_guardar">Guardar</string>
     <string name="button_change">Cambiar</string>

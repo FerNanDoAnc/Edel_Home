@@ -4,39 +4,35 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.example.fera1999.edelh.R;
+import com.example.fera1999.edelh.clases.Switches;
 import com.example.fera1999.edelh.clases.Usuario;
 
 import java.util.ArrayList;
 
-public class AdaptadorUsuario extends BaseAdapter {
+public class AdaptadorSwitches extends BaseAdapter {
 
     private Context context;
     private int layout;
-    private ArrayList<Usuario> listausuario;
+    private ArrayList<Switches> listaSwtiches;
 
-    public AdaptadorUsuario(Context context, int layout, ArrayList<Usuario> listausuario) {
+    public AdaptadorSwitches(Context context, int layout, ArrayList<Switches> listaSwtiches) {
         this.context = context;
         this.layout = layout;
-        this.listausuario = listausuario;
+        this.listaSwtiches = listaSwtiches;
     }
 
     @Override
     public int getCount() {
-        return listausuario.size();
+        return listaSwtiches.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listausuario.get(position);
+        return listaSwtiches.get(position);
     }
 
     @Override
@@ -45,10 +41,8 @@ public class AdaptadorUsuario extends BaseAdapter {
     }
 
     private class ViewHolder{
-        TextView tvnombreusuario, tvultimasesion;
+        TextView txtPlace, txtBulbState;
     }
-
-
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
@@ -59,20 +53,17 @@ public class AdaptadorUsuario extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(layout, null);
 
-            holder.tvnombreusuario= row.findViewById(R.id.tvnombreusuario);
-            holder.tvultimasesion= row.findViewById(R.id.tvultimasesion);
+            holder.txtPlace= row.findViewById(R.id.txtPlace);
+            holder.txtBulbState= row.findViewById(R.id.txtBulbState);
 
             row.setTag(holder);
         }
         else {
             holder = (ViewHolder) row.getTag();
         }
-
-        Usuario usuario = listausuario.get(position);
-
-        holder.tvnombreusuario.setText(usuario.getNombre());
-        holder.tvultimasesion.setText(usuario.getLastlogin());
-        System.out.println("LISTA: "+listausuario);
+        Switches switches = listaSwtiches.get(position);
+        holder.txtPlace.setText(switches.getplace());
+        holder.txtBulbState.setText(switches.getbulbState());
 
 
         return row;

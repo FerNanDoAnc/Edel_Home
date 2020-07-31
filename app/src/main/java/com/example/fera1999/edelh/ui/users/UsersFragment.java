@@ -90,7 +90,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
 
         listView = (ListView) root.findViewById(R.id.listausuario);
         lista = new ArrayList<>();
-        adaptador = new AdaptadorUsuario(getContext(),R.layout.itemusuario,lista);
+        adaptador = new AdaptadorUsuario(getContext(),R.layout.item_usuario,lista);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override
@@ -179,7 +179,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         });
     }
 
-    private void mostrarDialogCrearUsuario(Activity activity /*, final int position*/){
+    private void mostrarDialogCrearUsuario(Activity activity){
         final Dialog dialog = new Dialog(activity);
         dialog.setContentView(R.layout.agreganuevorusuario);
         dialog.setTitle("Ingrese datos del nuevo usuario");
