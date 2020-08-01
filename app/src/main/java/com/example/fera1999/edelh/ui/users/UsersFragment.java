@@ -59,13 +59,11 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
 
     EditText edtNombreUsuario, edtCorreoEletronico,edtClave,edtClaveConfirmacion, edtActualizarNombreUsuario;
     Button btnguardar,btncancelar;
-    ImageButton imbcrearnuevousuario;
-    Spinner sptipousuario;
+    ImageButton imgBtnCreateUser;
+    Spinner spnUserType;
 
-    String nombreusuarioeliminar = "";
-    private int selecciontipousuario = 0;
-    int eliminaridususario = 0;
-    String[] tipousuario={"Regular","Administrador"};
+    private int selectedTypeOfUser = 0;
+    String[] userTypes = {"Regular","Administrador"};
 
     SharedPreferences sharedPreferences;
 
@@ -79,14 +77,14 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         group_id = sharedPreferences.getString("group_id","");
         user_id = sharedPreferences.getString("user_id","");
 
-        edtNombreUsuario =root.findViewById(R.id.edtnombreusuario);
-        edtCorreoEletronico=root.findViewById(R.id.edtcorreoelectronico);
-        edtClave=root.findViewById(R.id.edtclave);
-        edtClaveConfirmacion=root.findViewById(R.id.edtclaveconfirmar);
+        edtNombreUsuario = root.findViewById(R.id.edtnombreusuario);
+        edtCorreoEletronico = root.findViewById(R.id.edtcorreoelectronico);
+        edtClave = root.findViewById(R.id.edtclave);
+        edtClaveConfirmacion = root.findViewById(R.id.edtclaveconfirmar);
 
-        imbcrearnuevousuario=root.findViewById(R.id.imbcrearnuevousuario);
+        imgBtnCreateUser = root.findViewById(R.id.imbcrearnuevousuario);
 
-        btnguardar=root.findViewById(R.id.btnguardarnuevousuario);
+        btnguardar = root.findViewById(R.id.btnguardarnuevousuario);
 
         listView = (ListView) root.findViewById(R.id.listausuario);
         lista = new ArrayList<>();
@@ -95,16 +93,14 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            alertDialog();
-            eliminaridususario=lista.get(position).getId();
-            nombreusuarioeliminar=lista.get(position).getNombre();
+            deleteUserDialog(lista.get(position).getNombre(), lista.get(position).getId());
          }
         });
 
         listView.setAdapter(adaptador);
 
-        imbcrearnuevousuario.setFocusable(false);
-        imbcrearnuevousuario.setOnClickListener(new View.OnClickListener() {
+        imgBtnCreateUser.setFocusable(false);
+        imgBtnCreateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               mostrarDialogCrearUsuario(getActivity());
@@ -118,23 +114,22 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
 
     }
 
-    private void alertDialog() {
+    private void deleteUserDialog(String userName, final int user_id) {
         AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
         dialog.setMessage("Eliminar Usuario");
-        dialog.setTitle("¿Estás seguro que deseas eliminar al usuario "+nombreusuarioeliminar+" ?");
+        dialog.setTitle("¿Estás seguro que deseas eliminar al usuario "+userName+" ?");
         dialog.setPositiveButton("Eliminar",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,
                                         int which) {
-                        deleteUser(eliminaridususario);
-                        Toast.makeText(getContext(),"Se realizó la acción",Toast.LENGTH_LONG).show();
+                        deleteUser(user_id);
+                        Toast.makeText(getContext(),"Eliminando usuario...",Toast.LENGTH_LONG).show();
                     }
                 });
 
         dialog.setNegativeButton("Cancelar",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(),"Se canceló la acción",Toast.LENGTH_LONG).show();
             }
         });
         AlertDialog alertDialog=dialog.create();
@@ -189,19 +184,19 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         edtClave=dialog.findViewById(R.id.edtclave);
         edtClaveConfirmacion=dialog.findViewById(R.id.edtclaveconfirmar);
 
-        sptipousuario=dialog.findViewById(R.id.tipousuario);
+        spnUserType=dialog.findViewById(R.id.tipousuario);
         btnguardar=dialog.findViewById(R.id.btnguardarnuevousuario);
         btncancelar=dialog.findViewById(R.id.btncancelar);
 
-        ArrayAdapter aa = new ArrayAdapter(Objects.requireNonNull(getContext()),android.R.layout.simple_spinner_item, tipousuario);
+        ArrayAdapter aa = new ArrayAdapter(Objects.requireNonNull(getContext()),android.R.layout.simple_spinner_item, userTypes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sptipousuario.setAdapter(aa);
+        spnUserType.setAdapter(aa);
 
-        sptipousuario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spnUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long idl) {
-                Toast.makeText(getContext(), tipousuario[position], Toast.LENGTH_SHORT).show();
-                selecciontipousuario=sptipousuario.getSelectedItemPosition();
+                Toast.makeText(getContext(), userTypes[position], Toast.LENGTH_SHORT).show();
+                selectedTypeOfUser=spnUserType.getSelectedItemPosition();
             }
 
             @Override
@@ -233,7 +228,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
                      newPassword =edtClave.getText().toString().trim();
                      newPasswordConfirm =edtClaveConfirmacion.getText().toString().trim();
                      Toast.makeText(getContext(),"Creando Usuario...",Toast.LENGTH_LONG).show();
-                     cargarWebService();
+                     createUserService();
                      dialog.dismiss();
 
                 }
@@ -311,7 +306,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
 
     }
 
-    private void cargarWebService() {
+    private void createUserService() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.ip_and_port) + "edelhome/createUser.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -332,7 +327,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
                 parametros.put("username", newUserName);
                 parametros.put("email", newEmail);
                 parametros.put("pass", newPassword);
-                parametros.put("administrador",String.valueOf(selecciontipousuario));
+                parametros.put("administrador",String.valueOf(selectedTypeOfUser));
                 parametros.put("group_id", group_id);
                 return parametros;
             }

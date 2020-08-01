@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -20,7 +21,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fera1999.edelh.R;
@@ -28,7 +28,6 @@ import com.loopj.android.http.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,8 +42,9 @@ public class HomeFragment extends Fragment {
     ImageButton btnEncender;
     RequestParams params= new RequestParams();
     SharedPreferences sharedPreferences;
-
-    Boolean bulbStatus = false;
+    ArrayList<Foco>lista= new ArrayList<>();
+    String switch_id;
+    Integer nextBulbState, globalPosition = 0;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -57,11 +57,22 @@ public class HomeFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()).getApplicationContext());
         String group_id = sharedPreferences.getString("group_id","");
-        String switch_id = sharedPreferences.getString("switch_id","");
         cliente = new AsyncHttpClient();
         llenarSpinner(group_id);
 
+        spinner_switch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                switch_id = lista.get(position).getSwitch_id();
+                globalPosition = position;
+                changeBtnImage(lista.get(position).getBulb_state());
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         btnEncender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,21 +83,31 @@ public class HomeFragment extends Fragment {
         return root;
 
     }
-
+    private void changeBtnImage(Integer ActualBDbulbState) {
+        if (ActualBDbulbState == 1){
+            btnEncender.setImageResource(R.drawable.turnon);
+            nextBulbState = 0;
+            lista.get(globalPosition).setBulb_state(nextBulbState);
+            Toast.makeText(
+                    Objects.requireNonNull(getActivity()).getApplicationContext(),
+                    "Foco encendido",
+                    Toast.LENGTH_LONG).show();
+        }else {
+            btnEncender.setImageResource(R.drawable.turnoff);
+            nextBulbState = 1;
+            lista.get(globalPosition).setBulb_state(nextBulbState);
+            Toast.makeText(
+                    Objects.requireNonNull(getActivity()).getApplicationContext(),
+                    "Foco apagado",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
     public void changeBulbStatus() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 getString(R.string.ip_and_port)+"edelhome/editBulbState.php", new Response.Listener<String>() {
               @Override
               public void onResponse(String response) {
-                  if(!bulbStatus) {
-                      btnEncender.setImageResource(R.drawable.turnon);
-                      bulbStatus = true;
-                      Toast.makeText(getContext(), "Foco Apagado", Toast.LENGTH_SHORT).show();
-                  } else {
-                      btnEncender.setImageResource(R.drawable.turnoff);
-                      bulbStatus = false;
-                      Toast.makeText(getContext(), "Foco Encendido", Toast.LENGTH_SHORT).show();
-                  }
+                  changeBtnImage(nextBulbState);
               }
         }, new Response.ErrorListener() {
              @Override
@@ -100,14 +121,12 @@ public class HomeFragment extends Fragment {
                @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> parameters = new HashMap<>();
-                    String bulbStatusOnBinary = "0";
-                    if(bulbStatus){
-                        bulbStatusOnBinary = "1";
-                    }
-                   String newStatus =  1 +","+ bulbStatusOnBinary;
+
+                    Log.d("benjaNEXSTATE",nextBulbState.toString());
+                     String newStatus =  1 +","+ nextBulbState;
                     parameters.put("arduinoRequest", newStatus);
-                    parameters.put("switch_id","1");
-                    parameters.put("bulb_state", bulbStatusOnBinary);
+                    parameters.put("switch_id", switch_id);
+                    parameters.put("bulb_state", nextBulbState.toString());
 
                     return parameters;
                 }
@@ -134,23 +153,15 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-    private void cargarSpinner(String respuesta){
-        ArrayList<Foco>lista= new ArrayList<>();
+    private void cargarSpinner(String respuesta) {
         try {
-            JSONArray jsonArreglo=new JSONArray(respuesta);
-            for(int i=0;i<jsonArreglo.length();i++){
-                if(i == 0){
-                    String bulbState = jsonArreglo.getJSONObject(i).getString("bulb_state");
-                    if (bulbState == "1"){
-                        btnEncender.setImageResource(R.drawable.turnon);
-                        bulbStatus = true;
-                    }else {
-                        btnEncender.setImageResource(R.drawable.turnoff);
-                        bulbStatus = false;
-                    }
-                }
+            JSONArray jsonArreglo = new JSONArray(respuesta);
+            for(int i=0 ; i < jsonArreglo.length() ; i++){
                 Foco foco= new Foco();
                 foco.setPlace(jsonArreglo.getJSONObject(i).getString("place"));
+                foco.setSwitch_id(jsonArreglo.getJSONObject(i).getString("switch_id"));
+                foco.setBulb_state(jsonArreglo.getJSONObject(i).getInt("bulb_state"));
+
                 lista.add(foco);
             }
             ArrayAdapter<Foco> focoArrayAdapter= new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, lista);

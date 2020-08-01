@@ -1,7 +1,7 @@
 package com.example.fera1999.edelh.ui.home;
 
 public class Foco {
-    private int switch_id;
+    private String switch_id;
     private String place;
     private int bulb_state;
     private int group_id;
@@ -9,18 +9,18 @@ public class Foco {
     public Foco() {
     }
 
-    public Foco(int switch_id, String place, int bulb_state, int group_id) {
+    public Foco(String switch_id, String place, int bulb_state, int group_id) {
         this.switch_id = switch_id;
         this.place = place;
         this.bulb_state = bulb_state;
         this.group_id = group_id;
     }
 
-    public int getSwitch_id() {
+    public String getSwitch_id() {
         return switch_id;
     }
 
-    public void setSwitch_id(int switch_id) {
+    public void setSwitch_id(String switch_id) {
         this.switch_id = switch_id;
     }
 

@@ -34,7 +34,7 @@
     <string name="switch_place_name">Habitación</string>
     <string name="button_crear_usuario">Crear</string>
     <string name="button_encender">Encender</string>
-    <string name="button_delete">Eliminar</string>
+    <string name="button_delete">Haz click en el item para eliminar</string>
     <string name="button_edit">Editar</string>
     <string name="button_cancelar">Cancelar</string>
     <string name="button_guardar">Guardar</string>
