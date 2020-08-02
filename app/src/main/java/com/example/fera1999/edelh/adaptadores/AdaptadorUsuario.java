@@ -59,8 +59,8 @@ public class AdaptadorUsuario extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(layout, null);
 
-            holder.tvnombreusuario=(TextView) row.findViewById(R.id.tvnombreusuario);
-            holder.tvultimasesion=(TextView) row.findViewById(R.id.tvultimasesion);
+            holder.tvnombreusuario= row.findViewById(R.id.tvnombreusuario);
+            holder.tvultimasesion= row.findViewById(R.id.tvultimasesion);
 
             row.setTag(holder);
         }

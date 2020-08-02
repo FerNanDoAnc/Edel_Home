@@ -39,6 +39,14 @@ BEGIN
    SELECT * FROM usuario WHERE group_id = var_id;
 END//
 
+DROP PROCEDURE IF EXISTS getGroupSwitches;
+DELIMITER //
+CREATE PROCEDURE getGroupSwitches(
+  IN var_group_id SMALLINT(5))
+BEGIN
+   SELECT * FROM switch WHERE group_id = var_group_id;
+END//
+
 DROP PROCEDURE IF EXISTS createUser;
 DELIMITER //
 CREATE PROCEDURE createUser(
@@ -101,9 +109,10 @@ DROP PROCEDURE IF EXISTS changePassword;
 DELIMITER //
 CREATE PROCEDURE changePassword(
   IN var_user_id SMALLINT(5),
-  IN new_pass VARCHAR(50))
+  IN var_new_pass VARCHAR(50),
+  IN var_actual_pass VARCHAR(50))
 BEGIN
-   UPDATE usuario SET pass = new_pass WHERE user_id = var_user_id;
+   UPDATE usuario SET pass = var_new_pass WHERE user_id = var_user_id AND pass = var_actual_pass;
 END//
 
 DROP PROCEDURE IF EXISTS updateUserData;
@@ -129,6 +138,26 @@ BEGIN
   SELECT * FROM usuario WHERE username = user_name AND pass = var_pass;
 END //
 
+
+DROP PROCEDURE IF EXISTS verificateUser;
+DELIMITER //
+CREATE PROCEDURE verificateUser(
+  IN var_user_id VARCHAR (30),
+  IN var_pass VARCHAR (50)
+)
+BEGIN
+  SELECT * FROM usuario WHERE user_id = var_user_id AND pass = var_pass;
+END //
+
+DROP PROCEDURE IF EXISTS deleteUser;
+DELIMITER //
+CREATE PROCEDURE deleteUser(
+  IN var_user_id VARCHAR (30)
+)
+BEGIN
+  DELETE FROM usuario WHERE user_id = var_user_id;
+END //
+
 -- TO WORK --
 DROP PROCEDURE IF EXISTS createGroup;
 DELIMITER //
@@ -138,3 +167,8 @@ BEGIN
    SELECT last_insert_id();
 END//
 
+SELECT * FROM edelhome.grupo_familia;
+call createUser('johnDoe', 'edelhome@gmail.com', 'idat1234', true, 1);
+SELECT * from edelhome.usuario;
+
+SELECT * FROM edelhome.usuario WHERE username = 'johnDoe' AND pass = '41564546';

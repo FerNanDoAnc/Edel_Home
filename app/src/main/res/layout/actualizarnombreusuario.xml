@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bordesitemlista"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/bordesitemlista">
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/edtactualizarnombreusuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:hint="Nombre usuario"
         android:layout_marginBottom="10dp"
-        android:textAlignment="textStart"
-        />
+        android:autofillHints="@string/empty_contentDescription"
+        android:baselineAligned="false"
+        android:hint="@string/text_login_input_user_hint"
+        android:inputType="text"
+        android:textAlignment="textStart" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        style="?android:attr/buttonBarButtonStyle">
 
         <Button
             android:id="@+id/btncambiarnombreusuario"
@@ -31,8 +33,9 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="30dp"
             android:background="#000"
-            android:text="Cancelar"
+            android:text="@string/button_cancelar"
             android:textAlignment="center"
+            style="?android:attr/buttonBarButtonStyle"
             android:textColor="@color/white" />
 
         <Button
@@ -40,13 +43,13 @@
             android:layout_width="169dp"
             android:layout_height="match_parent"
             android:background="#f00"
-            android:text="cambiar"
+            android:text="@string/button_change"
+            style="?android:attr/buttonBarButtonStyle"
             android:textAlignment="center"
             android:textColor="@color/white" />
 
 
     </LinearLayout>
-
 
 
 </LinearLayout>

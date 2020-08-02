@@ -20,5 +20,10 @@
             android:id="@+id/nav_changePassword"
             android:icon="@drawable/ic_psw"
             android:title="@string/menu_change_password" />
+        <item
+            android:id="@+id/nav_closeSession"
+            android:icon="@drawable/ic_close_session"
+            android:title="@string/text_close_session_button"/>
     </group>
+
 </menu>

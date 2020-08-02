@@ -3,15 +3,13 @@ package com.example.fera1999.edelh.ui.users;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Layout;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,24 +19,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.fera1999.edelh.R;
@@ -56,71 +47,60 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class UsersFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-    String ip="192.168.43.246";
-    String nuevonombreusuario;
-    String nuevocorreousuario;
-    String nuevaclaveusuario;
-    String claveconfirmacion;
+    String newUserName, newEmail, newPassword, newPasswordConfirm, group_id, user_id;
     private UsersViewModel galleryViewModel;
     ListView listView;
     ArrayList<Usuario> lista;
-    AdaptadorUsuario adaptador=null;
+    AdaptadorUsuario adaptador = null;
 
-    EditText edtnombreusuario,edtcorreoeletronico,edtclave,edtclaveconfirmacion;
-    EditText edtactualizarnombreusuario;
+    EditText edtNombreUsuario, edtCorreoEletronico,edtClave,edtClaveConfirmacion, edtActualizarNombreUsuario;
     Button btnguardar,btncancelar;
-    ImageButton imbcrearnuevousuario;
-    Spinner sptipousuario,spgrupo;
+    ImageButton imgBtnCreateUser;
+    Spinner spnUserType;
 
-    String nombreusuarioeliminar="";
-    Layout nuevousuario;
-    private String idgrupousuario="1";
-    private int selecciontipousuario=0;
-    private int selecciongrupo=0;
-    int eliminaridususario=0;
-    String[] tipousuario={"Regular","Administrador"};
-    String[] grupo={"Seleccione grupo","1","2","3","4","5"};
+    private int selectedTypeOfUser = 0;
+    String[] userTypes = {"Regular","Administrador"};
 
-    JsonObjectRequest jsonObjectRequest;
+    SharedPreferences sharedPreferences;
 
-    StringRequest stringRequest;
-    Dialog dialog;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         galleryViewModel =
                 ViewModelProviders.of(this).get(UsersViewModel.class);
         View root = inflater.inflate(R.layout.fragment_users, container, false);
 
-        edtnombreusuario=root.findViewById(R.id.edtnombreusuario);
-        edtcorreoeletronico=root.findViewById(R.id.edtcorreoelectronico);
-        edtclave=root.findViewById(R.id.edtclave);
-        edtclaveconfirmacion=root.findViewById(R.id.edtclaveconfirmar);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()).getApplicationContext());
+        group_id = sharedPreferences.getString("group_id","");
+        user_id = sharedPreferences.getString("user_id","");
 
-        imbcrearnuevousuario=root.findViewById(R.id.imbcrearnuevousuario);
+        edtNombreUsuario = root.findViewById(R.id.edtnombreusuario);
+        edtCorreoEletronico = root.findViewById(R.id.edtcorreoelectronico);
+        edtClave = root.findViewById(R.id.edtclave);
+        edtClaveConfirmacion = root.findViewById(R.id.edtclaveconfirmar);
 
-        btnguardar=root.findViewById(R.id.btnguardarnuevousuario);
+        imgBtnCreateUser = root.findViewById(R.id.imbcrearnuevousuario);
+
+        btnguardar = root.findViewById(R.id.btnguardarnuevousuario);
 
         listView = (ListView) root.findViewById(R.id.listausuario);
-        lista=new ArrayList<>();
-        adaptador=new AdaptadorUsuario(getContext(),R.layout.itemusuario,lista);
+        lista = new ArrayList<>();
+        adaptador = new AdaptadorUsuario(getContext(),R.layout.item_usuario,lista);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            alertDialog();
-            eliminaridususario=lista.get(position).getId();
-            nombreusuarioeliminar=lista.get(position).getNombre();
-            System.out.println(nombreusuarioeliminar+" "+eliminaridususario);
+            deleteUserDialog(lista.get(position).getNombre(), lista.get(position).getId());
          }
         });
 
         listView.setAdapter(adaptador);
 
-        imbcrearnuevousuario.setFocusable(false);
-        imbcrearnuevousuario.setOnClickListener(new View.OnClickListener() {
+        imgBtnCreateUser.setFocusable(false);
+        imgBtnCreateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               mostrarDialogCrearUsuario(getActivity());
@@ -128,45 +108,28 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         }) ;
 
 
-        downloadJSON("http://192.168.43.246/edelhome/getGroupUsers.php");
-   /*
-        final ToggleButton tbeditdelete=root.findViewById(R.id.tbactualizareliminar);
-
-        tbeditdelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tbeditdelete.isChecked()){
-                    Toast.makeText(getContext(),"eliminar",Toast.LENGTH_LONG).show();
-                    deleteUser(eliminaridususario);
-                }else{
-                    Toast.makeText(getContext(),"actualizar",Toast.LENGTH_LONG).show();
-                    mostrarDialogCambiarNombre(getActivity());
-                }
-            }
-        }); */
+        downloadJSON(getString(R.string.ip_and_port) + "edelhome/getGroupUsers.php?group_id="+ group_id);
 
         return root;
 
     }
 
-    private void alertDialog() {
+    private void deleteUserDialog(String userName, final int user_id) {
         AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
         dialog.setMessage("Eliminar Usuario");
-        dialog.setTitle("¿Estás seguro que deseas eliminar al usuario "+nombreusuarioeliminar+" ?");
+        dialog.setTitle("¿Estás seguro que deseas eliminar al usuario "+userName+" ?");
         dialog.setPositiveButton("Eliminar",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,
                                         int which) {
-                        System.out.println("DELETE ID "+eliminaridususario);
-                        deleteUser(eliminaridususario);
-                        Toast.makeText(getContext(),"Se realizó la acción",Toast.LENGTH_LONG).show();
+                        deleteUser(user_id);
+                        Toast.makeText(getContext(),"Eliminando usuario...",Toast.LENGTH_LONG).show();
                     }
                 });
 
         dialog.setNegativeButton("Cancelar",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(),"Se canceló la acción",Toast.LENGTH_LONG).show();
             }
         });
         AlertDialog alertDialog=dialog.create();
@@ -178,7 +141,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         dialog.setContentView(R.layout.actualizarnombreusuario);
         dialog.setTitle("Cambiar nombre");
 
-        edtactualizarnombreusuario = dialog.findViewById(R.id.edtactualizarnombreusuario);
+        edtActualizarNombreUsuario = dialog.findViewById(R.id.edtactualizarnombreusuario);
 
         Button btncambiarnombreusuario = dialog.findViewById(R.id.btncambiarnombreusuario);
         Button btncancelarcambionombre = dialog.findViewById(R.id.btncancelarcambionombre);
@@ -186,17 +149,17 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.5);
 
         int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.5);
-        dialog.getWindow().setLayout(width, height);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(width, height);
         dialog.show();
 
         btncambiarnombreusuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(edtactualizarnombreusuario.getText().toString().trim())) {
-                    edtactualizarnombreusuario.setError("El campo esta vacio");
+                if (TextUtils.isEmpty(edtActualizarNombreUsuario.getText().toString().trim())) {
+                    edtActualizarNombreUsuario.setError("El campo esta vacio");
                 } else {
-                    nuevonombreusuario = edtactualizarnombreusuario.getText().toString().trim();
-                    Toast.makeText(getContext(), nuevonombreusuario, Toast.LENGTH_LONG).show();
+                    newUserName = edtActualizarNombreUsuario.getText().toString().trim();
+                    Toast.makeText(getContext(), newUserName, Toast.LENGTH_LONG).show();
 
                 }
 
@@ -211,34 +174,29 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
         });
     }
 
-    private void mostrarDialogCrearUsuario(Activity activity /*, final int position*/){
+    private void mostrarDialogCrearUsuario(Activity activity){
         final Dialog dialog = new Dialog(activity);
         dialog.setContentView(R.layout.agreganuevorusuario);
         dialog.setTitle("Ingrese datos del nuevo usuario");
 
-        edtnombreusuario=dialog.findViewById(R.id.edtnombreusuario);
-        edtcorreoeletronico=dialog.findViewById(R.id.edtcorreoelectronico);
-        edtclave=dialog.findViewById(R.id.edtclave);
-        edtclaveconfirmacion=dialog.findViewById(R.id.edtclaveconfirmar);
+        edtNombreUsuario =dialog.findViewById(R.id.edtnombreusuario);
+        edtCorreoEletronico=dialog.findViewById(R.id.edtcorreoelectronico);
+        edtClave=dialog.findViewById(R.id.edtclave);
+        edtClaveConfirmacion=dialog.findViewById(R.id.edtclaveconfirmar);
 
-        sptipousuario=dialog.findViewById(R.id.tipousuario);
-        spgrupo=dialog.findViewById(R.id.idgrupo);
+        spnUserType=dialog.findViewById(R.id.tipousuario);
         btnguardar=dialog.findViewById(R.id.btnguardarnuevousuario);
         btncancelar=dialog.findViewById(R.id.btncancelar);
 
-        ArrayAdapter aa = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, tipousuario);
+        ArrayAdapter aa = new ArrayAdapter(Objects.requireNonNull(getContext()),android.R.layout.simple_spinner_item, userTypes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sptipousuario.setAdapter(aa);
+        spnUserType.setAdapter(aa);
 
-        ArrayAdapter bb = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, grupo);
-        bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spgrupo.setAdapter(bb);
-
-        sptipousuario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spnUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long idl) {
-                Toast.makeText(getContext(), tipousuario[position], Toast.LENGTH_SHORT).show();
-                selecciontipousuario=sptipousuario.getSelectedItemPosition();
+                Toast.makeText(getContext(), userTypes[position], Toast.LENGTH_SHORT).show();
+                selectedTypeOfUser=spnUserType.getSelectedItemPosition();
             }
 
             @Override
@@ -247,43 +205,30 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
             }
         });
 
-        spgrupo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long idl) {
-                Toast.makeText(getContext(), grupo[position], Toast.LENGTH_SHORT).show();
-                selecciongrupo=spgrupo.getSelectedItemPosition();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        int width = (int) (activity.getResources().getDisplayMetrics().widthPixels * 1 );
+        int width = (int) (activity.getResources().getDisplayMetrics().widthPixels);
 
         int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.7);
-        dialog.getWindow().setLayout(width, height);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(width, height);
         dialog.show();
 
         btnguardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(edtnombreusuario.getText().toString().trim())){
-                    edtnombreusuario.setError("El nombre usuario ya existe");
-                }else if (TextUtils.isEmpty(edtcorreoeletronico.getText().toString().trim())){
-                    edtcorreoeletronico.setError("El correo ya existe");
-                }else if (TextUtils.isEmpty(edtclave.getText().toString().trim())){
-                    edtclave.setError("Las contraseñas no coinciden");
-                }else if (TextUtils.isEmpty(edtclaveconfirmacion.getText().toString().trim())){
-                    edtclaveconfirmacion.setError("Las contraseñas no coinciden");
+                if (TextUtils.isEmpty(edtNombreUsuario.getText().toString().trim())){
+                    edtNombreUsuario.setError("El nombre usuario ya existe");
+                }else if (TextUtils.isEmpty(edtCorreoEletronico.getText().toString().trim())){
+                    edtCorreoEletronico.setError("El correo ya existe");
+                }else if (TextUtils.isEmpty(edtClave.getText().toString().trim())){
+                    edtClave.setError("Las contraseñas no coinciden");
+                }else if (TextUtils.isEmpty(edtClaveConfirmacion.getText().toString().trim())){
+                    edtClaveConfirmacion.setError("Las contraseñas no coinciden");
                 }else{
-                     nuevonombreusuario=edtnombreusuario.getText().toString().trim();
-                     nuevocorreousuario=edtcorreoeletronico.getText().toString().trim();
-                     nuevaclaveusuario=edtclave.getText().toString().trim();
-                     claveconfirmacion=edtclaveconfirmacion.getText().toString().trim();
-                     Toast.makeText(getContext(),nuevonombreusuario,Toast.LENGTH_LONG).show();
-                     cargarWebService();
+                     newUserName = edtNombreUsuario.getText().toString().trim();
+                     newEmail =edtCorreoEletronico.getText().toString().trim();
+                     newPassword =edtClave.getText().toString().trim();
+                     newPasswordConfirm =edtClaveConfirmacion.getText().toString().trim();
+                     Toast.makeText(getContext(),"Creando Usuario...",Toast.LENGTH_LONG).show();
+                     createUserService();
                      dialog.dismiss();
 
                 }
@@ -348,79 +293,74 @@ public class UsersFragment extends Fragment implements View.OnClickListener, Ada
             String sesion="Último inicio de sesión: ";
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
-            int idusuario=obj.getInt("user_id");
-            String nombre=obj.getString("username");
-            String ultimasesion=sesion.concat(obj.getString("last_login"));
+            String userId = obj.getString("user_id");
+            String name = obj.getString("username");
+            String lastSession = sesion.concat(obj.getString("last_login"));
             stocks[i] = obj.getString("username") + " " + obj.getString("last_login");
-            System.out.println(stocks[i]);
-            lista.add(new Usuario(idusuario,nombre,ultimasesion));
-            System.out.println("LISTA "+lista);
+            if(!user_id.contentEquals(userId.trim())){
+                lista.add(new Usuario(Integer.parseInt(userId), name, lastSession));
+            }
+
         }
         adaptador.notifyDataSetChanged();
 
     }
 
-    private void cargarWebService() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.43.246/edelhome/createUser.php", new Response.Listener<String>() {
+    private void createUserService() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.ip_and_port) + "edelhome/createUser.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(!response.isEmpty()){
-                    System.out.println("Vacio"+response);
-                } else {
-                    System.out.println("Respuestar error"+response);
-                }
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Usuario creado con éxito", Toast.LENGTH_LONG).show();
+                FragmentTransaction ft = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+
+                ft.detach(UsersFragment.this).attach(UsersFragment.this).commit();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR"+error.toString());
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> parametros = new HashMap<String,String>();
-                parametros.put("username",nuevonombreusuario);
-                parametros.put("email",nuevocorreousuario);
-                parametros.put("pass",nuevaclaveusuario);
-                parametros.put("administrador",String.valueOf(selecciontipousuario));
-                parametros.put("group_id",String.valueOf(selecciongrupo));
+            protected Map<String, String> getParams() {
+                Map<String,String> parametros = new HashMap<>();
+                parametros.put("username", newUserName);
+                parametros.put("email", newEmail);
+                parametros.put("pass", newPassword);
+                parametros.put("administrador",String.valueOf(selectedTypeOfUser));
+                parametros.put("group_id", group_id);
                 return parametros;
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
         requestQueue.add(stringRequest);
-
-
-
     }
 
     private void deleteUser(final int idUsuario) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.43.246/edelhome/deleteUser.php", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.ip_and_port) +"edelhome/deleteUser.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(!response.isEmpty()){
-                    System.out.println("Vacio"+response.toString());
-                    dialog.dismiss();
-                } else {
-                    System.out.println("Respuestar error"+response.toString());
-                }
+                    Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Usuario eliminado con éxito", Toast.LENGTH_LONG).show();
+                    FragmentTransaction ft = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+
+                    ft.detach(UsersFragment.this).attach(UsersFragment.this).commit();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("ERROR"+error.toString());
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> parametros = new HashMap<String,String>();
+            protected Map<String, String> getParams() {
+                Map<String,String> parametros = new HashMap<>();
                 parametros.put("user_id",String.valueOf(idUsuario));
                 return parametros;
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
         requestQueue.add(stringRequest);
 
     }
