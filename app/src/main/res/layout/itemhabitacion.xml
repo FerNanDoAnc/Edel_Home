@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/bordesitemlista">
+
+    <TextView
+        android:id="@+id/tvnombreusuariohabitacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Nombre usuario habitacion"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="textStart"
+        />
+
+    <Button
+        android:id="@+id/tbactualizareliminar"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:layout_marginStart="20dp"
+        android:background="#f00"
+        android:text="Editar"
+        android:textColor="@color/white" />
+
+</LinearLayout>
