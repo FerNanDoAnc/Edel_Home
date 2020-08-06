@@ -20,11 +20,15 @@ private String lastlogin;
         this.lastlogin = lastlogin;
     }
 
-    public Usuario( String nombre, String lastlogin){
+    public Usuario( String nombre,int id){
+        this.nombre = nombre;
+        this.id = id;
+    }
+
+    public Usuario( String nombre){
         this.nombre = nombre;
         this.lastlogin = lastlogin;
     }
-
     public Usuario(int id, String nombre, String email, String clave, int admin, int idgrupo, String lastlogin) {
         this.id = id;
         this.nombre = nombre;
