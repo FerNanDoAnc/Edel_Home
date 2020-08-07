@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         edtPass =findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
         txtNewUser = findViewById(R.id.txtNewuser);
-
         txtNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if(!response.isEmpty()){
                     Intent intent = new Intent(getApplicationContext(), MenuDrawerActivity.class);
+
                    try {
                         JSONObject userDataJson = new JSONObject(response);
                         userDataPref.putString("user_id", userDataJson.get("user_id").toString());
@@ -97,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                         userDataPref.putBoolean("isLogged",true);
                         userDataPref.apply();
                     } catch (JSONException e) {
+                       Toast.makeText(LoginActivity.this, "Ha ocurrido un error inesperado, intentar mas tarde", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                     startActivity(intent);
@@ -107,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, error.toString() +"asd", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override

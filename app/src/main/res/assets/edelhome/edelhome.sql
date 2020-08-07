@@ -17,6 +17,7 @@ CREATE TABLE usuario (
   pass VARCHAR (50) NOT NULL,
   administrador BOOLEAN NOT NULL,
   group_id SMALLINT (5) NOT NULL,
+  last_login CHAR(10),
   CONSTRAINT FOREIGN KEY fk_group_id(group_id)
     REFERENCES grupo_familia (group_id)
 );
@@ -37,7 +38,7 @@ CREATE PROCEDURE getGroupUsers(
   IN var_id SMALLINT(5))
 BEGIN
    SELECT * FROM usuario WHERE group_id = var_id;
-END//
+END //
 
 DROP PROCEDURE IF EXISTS getGroupSwitches;
 DELIMITER //
@@ -45,7 +46,7 @@ CREATE PROCEDURE getGroupSwitches(
   IN var_group_id SMALLINT(5))
 BEGIN
    SELECT * FROM switch WHERE group_id = var_group_id;
-END//
+END //
 
 DROP PROCEDURE IF EXISTS createUser;
 DELIMITER //
@@ -63,7 +64,7 @@ BEGIN
      var_administrador,
      var_group_id
    );
-END//
+END //
 
 DROP PROCEDURE IF EXISTS createSwitch;
 DELIMITER //
@@ -77,7 +78,7 @@ BEGIN
      var_bulb_state,
      var_group_id
    );
-END//
+END //
 
 DROP PROCEDURE IF EXISTS editSwitch;
 DELIMITER //
@@ -86,7 +87,7 @@ CREATE PROCEDURE editSwitch(
   IN var_place VARCHAR (20))
 BEGIN
    UPDATE switch SET place = var_place WHERE switch_id = var_switch_id;
-END//
+END //
 
 DROP PROCEDURE IF EXISTS editBulbState;
 DELIMITER //
@@ -95,7 +96,7 @@ CREATE PROCEDURE editBulbState(
   IN var_bulb_state BOOLEAN)
 BEGIN
    UPDATE switch SET bulb_state = var_bulb_state WHERE switch_id = var_switch_id;
-END//
+END //
 
 DROP PROCEDURE IF EXISTS getBulbState;
 DELIMITER //
@@ -103,7 +104,7 @@ CREATE PROCEDURE getBulbState(
   IN var_switch_id SMALLINT (5))
 BEGIN
    SELECT bulb_state FROM switch WHERE switch_id = var_switch_id;
-END//
+END //
 
 DROP PROCEDURE IF EXISTS changePassword;
 DELIMITER //
@@ -113,7 +114,7 @@ CREATE PROCEDURE changePassword(
   IN var_actual_pass VARCHAR(50))
 BEGIN
    UPDATE usuario SET pass = var_new_pass WHERE user_id = var_user_id AND pass = var_actual_pass;
-END//
+END //
 
 DROP PROCEDURE IF EXISTS updateUserData;
 DELIMITER //
@@ -126,16 +127,18 @@ BEGIN
    UPDATE usuario
    SET username = var_username , email = var_email , administrador = var_administrador
    WHERE user_id = var_user_id;
-END//
+END //
 
 DROP PROCEDURE IF EXISTS doLogin;
 DELIMITER //
 CREATE PROCEDURE doLogin(
   IN user_name VARCHAR (30),
-  IN var_pass VARCHAR (50)
+  IN var_pass VARCHAR (50),
+  IN var_last_login CHAR(10)
 )
 BEGIN
   SELECT * FROM usuario WHERE username = user_name AND pass = var_pass;
+  UPDATE usuario SET last_login = var_last_login WHERE username = user_name AND pass = var_pass;
 END //
 
 
@@ -164,11 +167,16 @@ DELIMITER //
 CREATE PROCEDURE createGroup()
 BEGIN
    INSERT INTO grupo_familia VALUES ();
-   SELECT last_insert_id();
-END//
+END //
 
-SELECT * FROM edelhome.grupo_familia;
-call createUser('johnDoe', 'edelhome@gmail.com', 'idat1234', true, 1);
-SELECT * from edelhome.usuario;
-
-SELECT * FROM edelhome.usuario WHERE username = 'johnDoe' AND pass = '41564546';
+call createGroup('EdelHome');
+call createUser('admin','admin@edelhome.com','123456',true, 1);
+call createUser('user','user@edelhome.com','123456',false, 1);
+call createUser('johnDoe', 'edelhome@gmail.com', '12345', true, 1);
+call createSwitch('Cuarto de admin', false, 1);
+call createSwitch('Cuarto de user', true, 1);
+call createSwitch('Cocina', false, 1);
+call createGroup('Superalumnos');
+call createUser('admin2','admin@edelhome.com','1234562',true, 2);
+call createUser('user2','user@edelhome.com','1234562',false, 2);
+call createSwitch('Cuarto del grupo 2', false, 2);
