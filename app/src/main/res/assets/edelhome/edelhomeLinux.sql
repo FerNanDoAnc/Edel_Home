@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-08-2020 a las 21:53:37
+-- Tiempo de generación: 08-08-2020 a las 15:00:30
 -- Versión del servidor: 5.5.50
 -- Versión de PHP: 5.4.16
 
@@ -104,3 +104,114 @@ ALTER TABLE `switch`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `grupo_familia` (`group_id`);
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `changePassword`(
+  IN var_user_id SMALLINT(5),
+  IN var_new_pass VARCHAR(50),
+  IN var_actual_pass VARCHAR(50))
+BEGIN
+   UPDATE usuario SET pass = var_new_pass WHERE user_id = var_user_id AND pass = var_actual_pass;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createGroup`(
+  IN var_group_name VARCHAR (30)
+)
+BEGIN
+   INSERT INTO grupo_familia(group_name) VALUES(var_group_name);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createSwitch`(
+  IN var_place VARCHAR (20),
+  IN var_bulb_state BOOLEAN,
+  IN var_group_id SMALLINT (5))
+BEGIN
+   INSERT INTO switch(place,bulb_state,group_id) VALUES(
+     var_place,
+     var_bulb_state,
+     var_group_id
+   );
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createUser`(
+  IN var_username VARCHAR (30),
+  IN var_email VARCHAR (50),
+  IN var_pass VARCHAR (50),
+  IN var_administrador BOOLEAN,
+  IN var_group_id SMALLINT (5))
+BEGIN
+   INSERT INTO usuario(username,email,pass,administrador,group_id) VALUES(var_username,var_email,var_pass,var_administrador,var_group_id);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser`(
+  IN var_user_id VARCHAR (30)
+)
+BEGIN
+  DELETE FROM usuario WHERE user_id = var_user_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `doLogin`(
+  IN user_name VARCHAR (30),
+  IN var_pass VARCHAR (50),
+  IN var_last_login CHAR(10)
+)
+BEGIN
+  SELECT * FROM usuario WHERE username = user_name AND pass = var_pass;
+  UPDATE usuario SET last_login = var_last_login WHERE username = user_name AND pass = var_pass;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `editBulbState`(
+  IN var_switch_id SMALLINT (5),
+  IN var_bulb_state BOOLEAN)
+BEGIN
+   UPDATE switch SET bulb_state = var_bulb_state WHERE switch_id = var_switch_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `editSwitch`(
+  IN var_switch_id SMALLINT (5),
+  IN var_place VARCHAR (20))
+BEGIN
+   UPDATE switch SET place = var_place WHERE switch_id = var_switch_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getBulbState`(
+  IN var_switch_id SMALLINT (5))
+BEGIN
+   SELECT bulb_state FROM switch WHERE switch_id = var_switch_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupSwitches`(
+  IN var_group_id SMALLINT(5))
+BEGIN
+   SELECT * FROM switch WHERE group_id = var_group_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getGroupUsers`(
+  IN var_id SMALLINT(5))
+BEGIN
+   SELECT * FROM usuario WHERE group_id = var_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUserData`(
+  IN var_user_id SMALLINT (5),
+  IN var_username VARCHAR (30),
+  IN var_email VARCHAR (50),
+  IN var_administrador BOOLEAN)
+BEGIN
+   UPDATE usuario
+   SET username = var_username , email = var_email , administrador = var_administrador
+   WHERE user_id = var_user_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `verificateUser`(
+  IN var_user_id VARCHAR (30),
+  IN var_pass VARCHAR (50)
+)
+BEGIN
+  SELECT * FROM usuario WHERE user_id = var_user_id AND pass = var_pass;
+END$$
+
+DELIMITER ;
