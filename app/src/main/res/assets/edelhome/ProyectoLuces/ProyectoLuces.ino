@@ -32,12 +32,9 @@ void loop(){
         if(estado == '1'){
             digitalWrite(led1,HIGH);
           }
-        if(estado == '0'){
+        else{
             digitalWrite(led1, LOW);
         }
       }
-  Serial.println(dato);
-
   }
-  Serial.println("id"+id);
 }
